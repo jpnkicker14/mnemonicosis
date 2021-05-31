@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <span>Deck Memory Test ({{selectedStack?.name || 'Select Stack →'}})</span>
+  <span class="spacer"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Change Stack">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <a *ngFor="let stack of stacks"
+       mat-menu-item
+       routerLinkActive="active"
+       [routerLink]="stack.isCyclical ? ['/cyclical']: ['/mem-deck']"
+       [queryParams]="{id: stack.id}">
+      <span>{{stack.name}}</span>
+    </a>
+  </mat-menu>
+
+
+</mat-toolbar>
+<router-outlet></router-outlet>

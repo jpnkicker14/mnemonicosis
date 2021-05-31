@@ -1,0 +1,7 @@
+<!-- original show -->
+<span *ngFor="let card of stack?.stack"
+      class="mat-title"
+[style.color]="card.isRed ? 'darkRed': 'black'">
+  {{card.shortHandValue}}<span [innerHTML]="card.htmlSuit"></span>|
+</span>
+
