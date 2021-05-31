@@ -13,6 +13,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule} from '@angular/common';
 import { MemDeckComponent } from './components/mem-deck/mem-deck.component';
 import { CyclicalComponent } from './components/cyclical/cyclical.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CyclicalComponent } from './components/cyclical/cyclical.component';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    HttpClientModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

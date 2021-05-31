@@ -2,7 +2,7 @@ import {Suit} from './suit.enum';
 import {CardValue} from './card-value.enum';
 
 export class Card {
-  value = CardValue
+  value: CardValue
   suit: Suit
   position?: number;
   isNatural?: boolean;

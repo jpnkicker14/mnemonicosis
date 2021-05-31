@@ -11,7 +11,7 @@ import {delay} from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   stacks: Array<Stack>;
-  selectedStack = Stack;
+  selectedStack: Stack | undefined;
 
   constructor(private route: ActivatedRoute,
               private stacksService: StacksService) {
