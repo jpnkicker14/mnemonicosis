@@ -62,6 +62,6 @@ export const aronson = new Stack(
     new Card(CardValue.six, Suit.diamonds, 49),
     new Card(CardValue.queen, Suit.clubs, 50),
     new Card(CardValue.two, Suit.clubs, 51),
-    new Card(CardValue.nine, Suit.diamonds, 52),
+    new Card(CardValue.nine, Suit.diamonds, 52)
   ]
 )

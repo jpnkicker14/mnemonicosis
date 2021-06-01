@@ -1,9 +1,66 @@
 import {Stack} from '../stack';
 import {StackGroup} from '../enums/stack-group.enum';
+import {Card} from '../card';
+import {CardValue} from '../enums/card-value.enum';
+import {Suit} from '../enums/suit.enum';
+import {NaturalEnum} from '../enums/natural.enum';
 
 export const tamariz = new Stack(
   'tamariz',
   'Tamariz',
   StackGroup.Memorized,
-  []
+  [
+    new Card(CardValue.four, Suit.clubs, 1),
+    new Card(CardValue.two, Suit.hearts, 2),
+    new Card(CardValue.seven, Suit.diamonds, 3),
+    new Card(CardValue.three, Suit.clubs, 4),
+    new Card(CardValue.four, Suit.hearts, 5),
+    new Card(CardValue.six, Suit.diamonds, 6),
+    new Card(CardValue.ace, Suit.spades, 7),
+    new Card(CardValue.five, Suit.hearts, 8),
+    new Card(CardValue.nine, Suit.spades, 9),
+    new Card(CardValue.two, Suit.spades, 10),
+    new Card(CardValue.queen, Suit.hearts, 11),
+    new Card(CardValue.three, Suit.diamonds, 12),
+    new Card(CardValue.queen, Suit.clubs, 13),
+    new Card(CardValue.eight, Suit.hearts, 14),
+    new Card(CardValue.six, Suit.spades, 15),
+    new Card(CardValue.five, Suit.spades, 16),
+    new Card(CardValue.nine, Suit.hearts, 17),
+    new Card(CardValue.king, Suit.clubs, 18),
+    new Card(CardValue.two, Suit.diamonds, 19),
+    new Card(CardValue.jack, Suit.hearts, 20),
+    new Card(CardValue.three, Suit.spades, 21),
+    new Card(CardValue.eight, Suit.spades, 22),
+    new Card(CardValue.six, Suit.hearts, 23),
+    new Card(CardValue.ten, Suit.clubs, 24),
+    new Card(CardValue.five, Suit.diamonds, 25),
+    new Card(CardValue.king, Suit.diamonds, 26),
+    new Card(CardValue.two, Suit.hearts, 27),
+    new Card(CardValue.three, Suit.hearts, 28),
+    new Card(CardValue.eight, Suit.diamonds, 29),
+    new Card(CardValue.five, Suit.clubs, 30),
+    new Card(CardValue.king, Suit.spades, 31),
+    new Card(CardValue.jack, Suit.diamonds, 32),
+    new Card(CardValue.eight, Suit.clubs, 33),
+    new Card(CardValue.ten, Suit.spades, 34),
+    new Card(CardValue.king, Suit.hearts, 35),
+    new Card(CardValue.jack, Suit.clubs, 36),
+    new Card(CardValue.seven, Suit.spades, 37),
+    new Card(CardValue.ten, Suit.hearts, 38),
+    new Card(CardValue.ace, Suit.diamonds, 39),
+    new Card(CardValue.four, Suit.spades, 40),
+    new Card(CardValue.seven, Suit.hearts, 41),
+    new Card(CardValue.four, Suit.diamonds, 42),
+    new Card(CardValue.ace, Suit.clubs, 43),
+    new Card(CardValue.nine, Suit.clubs, 44),
+    new Card(CardValue.jack, Suit.spades, 45),
+    new Card(CardValue.queen, Suit.diamonds, 46),
+    new Card(CardValue.seven, Suit.clubs, 47),
+    new Card(CardValue.queen, Suit.spades, 48),
+    new Card(CardValue.ten, Suit.diamonds, 49),
+    new Card(CardValue.six, Suit.clubs, 50),
+    new Card(CardValue.ace, Suit.hearts, 51),
+    new Card(CardValue.nine, Suit.diamonds, 52)
+  ]
 );
