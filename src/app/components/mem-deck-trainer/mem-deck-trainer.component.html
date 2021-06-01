@@ -82,11 +82,16 @@
         <mat-icon>arrow_back_ios</mat-icon>
       </button>
 
-      <span class="mat-title"
-            [style.color]="boundStack[focus].isRed ? 'darkRed': 'black'">
+      <div fxLayout="column">
+        <span class="mat-title"
+              [style.color]="boundStack[focus].isRed ? 'darkRed': 'black'">
         {{boundStack[focus].shortHandValue}}
-        <span [innerHTML]="boundStack[focus].htmlSuit"></span>
+          <span [innerHTML]="boundStack[focus].htmlSuit"></span>
       </span>
+
+        <span>position: {{boundStack[focus].position}}</span>
+      </div>
+
 
       <button mat-icon-button
               aria-label="next"
