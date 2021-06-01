@@ -56,8 +56,7 @@ export class MemDeckTrainerComponent implements OnInit {
   CardDisplayEnum = CardDisplayEnum;
 
   constructor(private route: ActivatedRoute,
-              private stacksService: StacksService,
-              private nameService: NameService) {
+              private stacksService: StacksService) {
     this.errorMatcher = new CrossFieldErrorMatcher();
     this.stack = null;
     this.boundStack = [];
@@ -71,16 +70,13 @@ export class MemDeckTrainerComponent implements OnInit {
     this.route.queryParams
       .subscribe((param: Params) => {
         this.stack = <Stack>this.stacksService.getStack(param?.id);
-        this.boundStack = this.stack?.stack ?? [];
+        this.boundStack = this.stack?.cards ?? [];
       })
-
-    this.nameService.getName()
-      .subscribe((name) => console.log(name));
   }
 
   update() {
     this.form?.resetForm(this.deckParams);
-    const boundStack = this.stack?.stack.slice(this.deckParams.start - 1, this.deckParams.end) ?? [];
+    const boundStack = this.stack?.cards.slice(this.deckParams.start - 1, this.deckParams.end) ?? [];
     this.boundStack = (this.deckParams.shuffle === DeckStateEnum.shuffle) ? this.shuffle(boundStack) : boundStack;
     this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     this.focus = 0;

@@ -36,7 +36,7 @@ export const tamariz = new Stack(
     new Card(CardValue.ten, Suit.clubs, 24),
     new Card(CardValue.five, Suit.diamonds, 25),
     new Card(CardValue.king, Suit.diamonds, 26),
-    new Card(CardValue.two, Suit.hearts, 27),
+    new Card(CardValue.two, Suit.clubs, 27),
     new Card(CardValue.three, Suit.hearts, 28),
     new Card(CardValue.eight, Suit.diamonds, 29),
     new Card(CardValue.five, Suit.clubs, 30),

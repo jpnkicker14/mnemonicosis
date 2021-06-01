@@ -1,0 +1,6 @@
+<span *ngIf="card"
+      [class]="cardClass"
+      [style.color]="card.isRed ? 'darkRed': 'black'">
+              {{card.shortHandValue}}
+  <span [innerHTML]="card.htmlSuit"></span>
+</span>

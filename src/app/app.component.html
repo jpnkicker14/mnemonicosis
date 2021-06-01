@@ -35,6 +35,14 @@
 
         <a mat-list-item
            routerLinkActive="active"
+           routerLink="/home"
+           [queryParams]="{id: selectedStackId}"
+        >
+          Home
+        </a>
+
+        <a mat-list-item
+           routerLinkActive="active"
            routerLink="/trainer"
            [queryParams]="{id: selectedStackId}"
         >

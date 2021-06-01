@@ -5,13 +5,13 @@ export class Stack {
   id: string;
   name: string;
   group: StackGroup;
-  stack: Array<Card>;
+  cards: Array<Card>;
 
-  constructor(id: string, name: string, group: StackGroup, stack: Array<Card>) {
+  constructor(id: string, name: string, group: StackGroup, cards: Array<Card>) {
     this.id = id;
     this.name = name;
     this.group = group;
-    this.stack = stack;
+    this.cards = cards;
   }
 
   get isCyclical(): boolean {
