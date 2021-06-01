@@ -3,43 +3,64 @@ import {Stack} from '../../services/stacks/stack';
 import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {NameService} from '../../services/name/name.service';
-import {filter, map} from 'rxjs/operators';
 import {DeckStateEnum} from './deck-state.enum';
 import {Card} from '../../services/stacks/card';
 import {NgForm} from '@angular/forms';
+import {CardDisplayEnum} from './card-display.enum';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-mem-deck-trainer',
   templateUrl: './mem-deck-trainer.component.html',
-  styleUrls: ['./mem-deck-trainer.component.sass']
+  styleUrls: ['./mem-deck-trainer.component.sass'],
+  animations: [
+    trigger("cardFlip", [
+      state(
+        "default",
+        style({
+          transform: "none"
+        })
+      ),
+      state(
+        "flipped",
+        style({
+          transform: "rotateY(180deg)"
+        })
+      ),
+      transition("default => flipped", [animate("400ms")]),
+      transition("flipped => default", [animate("400ms")])
+    ])
+  ]
 })
 export class MemDeckTrainerComponent implements OnInit {
-  stack: Stack;
+  stack: Stack | null;
   boundStack: Array<Card>;
-  deckParams: { start: number, end: number, shuffle: DeckStateEnum };
+  deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum};
   focus: number;
+  state: "default" | "flipped"
+  showImage: boolean;
 
-  @ViewChild('form') form: NgForm;
+  @ViewChild('form') form?: NgForm;
 
   DeckStateEnum = DeckStateEnum;
+  CardDisplayEnum = CardDisplayEnum;
 
   constructor(private route: ActivatedRoute,
               private stacksService: StacksService,
               private nameService: NameService) {
-    this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop};
+    this.stack = null;
+    this.boundStack = [];
+    this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
+    this.state = 'default';
     this.focus = 0;
+    this.showImage = true;
   }
 
   ngOnInit(): void {
     this.route.queryParams
-      .pipe(
-        filter((param: Params) => param?.id != null),
-        map((param: Params) => this.stacksService.getStack(param?.id)),
-        filter((stack: Stack) => stack != null)
-      )
-      .subscribe((stack: Stack) => {
-        this.stack = stack
-        this.boundStack = this.stack.stack;
+      .subscribe((param: Params) => {
+        this.stack = <Stack>this.stacksService.getStack(param?.id);
+        this.boundStack = this.stack?.stack ?? [];
       })
 
     this.nameService.getName()
@@ -47,18 +68,24 @@ export class MemDeckTrainerComponent implements OnInit {
   }
 
   update() {
-    this.form.resetForm(this.deckParams);
-    const boundStack = this.stack.stack.slice(this.deckParams.start - 1, this.deckParams.end);
-    if (this.deckParams.shuffle === DeckStateEnum.shuffle) {
-      this.boundStack = this.shuffle(boundStack);
-    } else {
-      this.boundStack = boundStack;
-    }
+    this.form?.resetForm(this.deckParams);
+    const boundStack = this.stack?.stack.slice(this.deckParams.start - 1, this.deckParams.end) ?? [];
+    this.boundStack = (this.deckParams.shuffle === DeckStateEnum.shuffle) ? this.shuffle(boundStack) : boundStack;
+    this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     this.focus = 0;
   }
 
+  cardClicked() {
+    if (this.state === "default") {
+      this.state = "flipped";
+    } else {
+      this.state = "default";
+    }
+  }
+
   leftClickHandler(): void {
-    if(this.focus === 0) {
+    this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
+    if (this.focus === 0) {
       this.focus = this.boundStack.length - 1;
     } else {
       this.focus--;
@@ -66,6 +93,7 @@ export class MemDeckTrainerComponent implements OnInit {
   }
 
   rightClickHandler(): void {
+    this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     if (this.focus === this.boundStack.length - 1) {
       this.focus = 0;
     } else {

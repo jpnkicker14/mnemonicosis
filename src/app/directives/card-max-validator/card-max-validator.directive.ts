@@ -10,14 +10,13 @@ import {AbstractControl, NG_VALIDATORS, ValidationErrors} from '@angular/forms';
   }]
 })
 export class CardMaxValidatorDirective {
-  @Input() appCardMaxValidator: number;
 
-  constructor() { }
+  constructor() {
+  }
 
   validate(control: AbstractControl): ValidationErrors | null {
     const moreThanDeck = control.value > 52;
-    const moreThanMin = this.appCardMaxValidator ? control.value > this.appCardMaxValidator : false;
-    return (moreThanDeck || moreThanMin) ?  {max: `Should be less than or equal to ${moreThanDeck ? '52': this.appCardMaxValidator}`} :  null
+    return moreThanDeck?  {max: `Should be less than or equal to 52`} :  null
   }
 
 }

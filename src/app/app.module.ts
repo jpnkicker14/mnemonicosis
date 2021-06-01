@@ -17,13 +17,15 @@ import {MatListModule} from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MemDeckTrainerComponent } from './components/mem-deck-trainer/mem-deck-trainer.component';
-import { MnemonicosisComponent } from './components/mnemonicosis/mnemonicosis.component';
+import {MemDeckTrainerComponent} from './components/mem-deck-trainer/mem-deck-trainer.component';
+import {MnemonicosisComponent} from './components/mnemonicosis/mnemonicosis.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { CardMinValidatorDirective } from './directives/card-min-validator/card-min-validator.directive';
-import { CardMaxValidatorDirective } from './directives/card-max-validator/card-max-validator.directive';
+import {CardMinValidatorDirective} from './directives/card-min-validator/card-min-validator.directive';
+import {CardMaxValidatorDirective} from './directives/card-max-validator/card-max-validator.directive';
+import {MatCardModule} from '@angular/material/card';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { CardMaxValidatorDirective } from './directives/card-max-validator/card-
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatCardModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

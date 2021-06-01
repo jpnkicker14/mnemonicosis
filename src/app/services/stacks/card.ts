@@ -14,6 +14,10 @@ export class Card {
     this.isNatural = isNatural;
   }
 
+  get wordValue(): string {
+    return CardValue[this.value];
+  }
+
   get shortHandValue(): string {
     switch (this.value) {
       case CardValue.ace:

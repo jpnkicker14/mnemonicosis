@@ -1,4 +1,4 @@
-import {Directive, Input} from '@angular/core';
+import {Attribute, Directive, Input} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors} from '@angular/forms';
 
 @Directive({
@@ -10,13 +10,12 @@ import {AbstractControl, NG_VALIDATORS, ValidationErrors} from '@angular/forms';
   }]
 })
 export class CardMinValidatorDirective {
-  @Input() appCardMinValidator: number;
 
-  constructor() { }
+  constructor() {
+  }
 
   validate(control: AbstractControl): ValidationErrors | null {
     const lessThanDeck = control.value < 1;
-    const lessThanMax = this.appCardMinValidator ? control.value < this.appCardMinValidator : false;
-    return (lessThanDeck || lessThanMax) ?  {max: `Should be more than or equal to ${lessThanDeck ? '1': this.appCardMinValidator}`} :  null
+    return lessThanDeck ?  {max: `Should be more than or equal to 1`} :  null
   }
 }
