@@ -11,15 +11,27 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule} from '@angular/common';
-import { MemDeckComponent } from './components/mem-deck/mem-deck.component';
-import { CyclicalComponent } from './components/cyclical/cyclical.component';
 import {HttpClientModule} from '@angular/common/http';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MemDeckTrainerComponent } from './components/mem-deck-trainer/mem-deck-trainer.component';
+import { MnemonicosisComponent } from './components/mnemonicosis/mnemonicosis.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { CardMinValidatorDirective } from './directives/card-min-validator/card-min-validator.directive';
+import { CardMaxValidatorDirective } from './directives/card-max-validator/card-max-validator.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MemDeckComponent,
-    CyclicalComponent
+    MemDeckTrainerComponent,
+    MnemonicosisComponent,
+    CardMinValidatorDirective,
+    CardMaxValidatorDirective
   ],
   imports: [
     CommonModule,
@@ -32,11 +44,20 @@ import {HttpClientModule} from '@angular/common/http';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

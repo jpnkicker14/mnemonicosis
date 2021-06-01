@@ -1,20 +1,65 @@
-<mat-toolbar color="primary">
-  <span>Deck Memory Test ({{selectedStack?.name || 'Select Stack →'}})</span>
-  <span class="spacer"></span>
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Change Stack">
-    <mat-icon>more_vert</mat-icon>
-  </button>
+<div class="navbar-container" [class.example-is-mobile]="mobileQuery.matches">
 
-  <mat-menu #menu="matMenu">
-    <a *ngFor="let stack of stacks"
-       mat-menu-item
-       routerLinkActive="active"
-       [routerLink]="stack.isCyclical ? ['/cyclical']: ['/mem-deck']"
-       [queryParams]="{id: stack.id}">
-      <span>{{stack.name}}</span>
-    </a>
-  </mat-menu>
+  <!-- Top navbar -->
+  <mat-toolbar class="navbar" color="primary">
 
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
 
-</mat-toolbar>
-<router-outlet></router-outlet>
+    <span>{{selectedStack?.name || 'Select Stack'}}</span>
+
+    <span class="spacer"></span>
+
+  </mat-toolbar>
+
+  <mat-sidenav-container class="navbar-sidenav-container">
+    <!-- Side nav -->
+    <mat-sidenav #snav [opened]="!mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav">
+
+      <mat-nav-list>
+        <mat-form-field appearance="fill"
+                        mat-list-item>
+          <mat-label>Stack</mat-label>
+          <mat-select [ngModel]="selectedStackId"
+                      (ngModelChange)="stackChangeHandler($event)"
+                      [ngModelOptions]="{standalone: true}">
+            <mat-optgroup *ngFor="let group of groupedStacks" [label]="group.name">
+              <mat-option *ngFor="let stack of group.stacks" [value]="stack.id">
+                {{stack.name}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+
+        <a mat-list-item
+           routerLinkActive="active"
+           routerLink="/trainer"
+           [queryParams]="{id: selectedStackId}"
+        >
+          Trainer
+        </a>
+
+        <a mat-list-item
+           routerLinkActive="active"
+           routerLink="/mnemonicosis"
+           [queryParams]="{id: selectedStackId}"
+        >
+          Mnemonicosis
+        </a>
+
+      </mat-nav-list>
+
+    </mat-sidenav>
+
+    <!-- Main content -->
+    <mat-sidenav-content class="sidenav-content">
+
+      <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
+

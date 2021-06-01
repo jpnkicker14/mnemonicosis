@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CyclicalComponent } from './cyclical.component';
+import { MemDeckTrainerComponent } from './mem-deck-trainer.component';
 
-describe('CyclicalComponent', () => {
-  let component: CyclicalComponent;
-  let fixture: ComponentFixture<CyclicalComponent>;
+describe('MemDeckTrainerComponent', () => {
+  let component: MemDeckTrainerComponent;
+  let fixture: ComponentFixture<MemDeckTrainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CyclicalComponent ]
+      declarations: [ MemDeckTrainerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CyclicalComponent);
+    fixture = TestBed.createComponent(MemDeckTrainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

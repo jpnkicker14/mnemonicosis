@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MemDeckComponent } from './mem-deck.component';
+import { MnemonicosisComponent } from './mnemonicosis.component';
 
-describe('MemDeckComponent', () => {
-  let component: MemDeckComponent;
-  let fixture: ComponentFixture<MemDeckComponent>;
+describe('MnemonicosisComponent', () => {
+  let component: MnemonicosisComponent;
+  let fixture: ComponentFixture<MnemonicosisComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MemDeckComponent ]
+      declarations: [ MnemonicosisComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MemDeckComponent);
+    fixture = TestBed.createComponent(MnemonicosisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

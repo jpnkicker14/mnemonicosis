@@ -1,5 +1,5 @@
-import {Suit} from './suit.enum';
-import {CardValue} from './card-value.enum';
+import {Suit} from './enums/suit.enum';
+import {CardValue} from './enums/card-value.enum';
 
 export class Card {
   value: CardValue

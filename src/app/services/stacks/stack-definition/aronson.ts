@@ -1,10 +1,15 @@
 import {Stack} from '../stack';
 import {Card} from '../card';
-import {CardValue} from '../card-value.enum';
-import {Suit} from '../suit.enum';
+import {CardValue} from '../enums/card-value.enum';
+import {Suit} from '../enums/suit.enum';
+import {StackGroup} from '../enums/stack-group.enum';
 
 // todo natural (maybe not here)
-export const aronson = new Stack('aronson', 'Aronson', false,[
+export const aronson = new Stack(
+  'aronson',
+  'Aronson',
+  StackGroup.Memorized,
+  [
     new Card(CardValue.jack, Suit.spades, 1),
     new Card(CardValue.king, Suit.clubs, 2),
     new Card(CardValue.five, Suit.clubs, 3),

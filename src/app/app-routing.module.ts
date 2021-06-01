@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {MemDeckComponent} from './components/mem-deck/mem-deck.component';
-import {CyclicalComponent} from './components/cyclical/cyclical.component';
+import {MemDeckTrainerComponent} from './components/mem-deck-trainer/mem-deck-trainer.component';
+import {MnemonicosisComponent} from './components/mnemonicosis/mnemonicosis.component';
 
 const routes: Routes = [
-  {path: 'mem-deck', component: MemDeckComponent},
-  {path: 'cyclical', component: CyclicalComponent},
+  {path: 'trainer', component: MemDeckTrainerComponent},
+  {path: 'mnemonicosis', component: MnemonicosisComponent},
+  {path: '**', redirectTo: 'trainer', pathMatch: 'full'}
 ];
 
 @NgModule({

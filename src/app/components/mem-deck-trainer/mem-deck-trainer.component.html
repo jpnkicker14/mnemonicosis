@@ -1,0 +1,100 @@
+<div class="container" fxLayout="row">
+  <div fxFlex="95%">
+    <div fxLayout="row" fxLayoutAlign="center none">
+      <form
+        #form="ngForm"
+        (ngSubmit)="update()"
+        fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+
+          appearance="standard">
+          <mat-label>Start</mat-label>
+          <input matInput
+                 placeholder="1"
+                 required
+                 type="number"
+                 name="start"
+                 [(ngModel)]="deckParams.start"
+                 appCardMinValidator
+                 [appCardMaxValidator]="deckParams.end"
+          />
+          <mat-error *ngIf="form.controls['start']?.hasError('required')">
+            Please enter outer limit
+          </mat-error>
+          <mat-error *ngIf="form.controls['start']?.hasError('max')">
+            {{form.controls['start'].errors.max}}
+          </mat-error>
+          <mat-error *ngIf="form.controls['start']?.hasError('min')">
+            {{form.controls['start'].errors.max}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field
+
+          appearance="standard">
+          <mat-label>End</mat-label>
+          <input matInput
+                 placeholder="52"
+                 required
+                 type="number"
+                 name="end"
+                 [(ngModel)]="deckParams.end"
+                 appCardMaxValidator
+                 [appCardMinValidator]="deckParams.start"/>
+          <mat-error *ngIf="form.controls['end']?.hasError('required')">
+            Please enter outer limit
+          </mat-error>
+          <mat-error *ngIf="form.controls['end']?.hasError('max')">
+            {{form.controls['end'].errors.max}}
+          </mat-error>
+          <mat-error *ngIf="form.controls['end']?.hasError('min')">
+            {{form.controls['min'].errors.max}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-button-toggle-group
+          name="shuffle"
+          [(ngModel)]="deckParams.shuffle"
+          aria-label="Shuffle state">
+          <mat-button-toggle [value]="DeckStateEnum.shuffle" aria-label="Shuffle">
+            <mat-icon>shuffle</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="DeckStateEnum.loop" aria-label="Loop">
+            <mat-icon>loop</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || form.pristine">Update
+        </button>
+      </form>
+
+    </div>
+
+    <div class="card-display"
+         fxLayout="row" fxLayoutAlign="space-around center">
+      <button mat-icon-button
+              aria-label="previous"
+        (click)="leftClickHandler()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+
+      <span class="mat-title"
+            [style.color]="boundStack[focus].isRed ? 'darkRed': 'black'">
+        {{boundStack[focus].shortHandValue}}
+        <span [innerHTML]="boundStack[focus].htmlSuit"></span>
+      </span>
+
+      <button mat-icon-button
+              aria-label="next"
+              (click)="rightClickHandler()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</div>
+
