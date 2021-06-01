@@ -1,5 +1,5 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div *ngIf="stack; else selectStack"
+  <div *ngIf="stack && boundStack; else selectStack"
        fxFlex="95%">
     <mat-card>
       <mat-card-content fxLayout="row" fxLayoutAlign="center none">
@@ -134,6 +134,7 @@
           <p *ngIf="boundStack[focus].isNatural" class="mat-title">Natural:
             <em>{{boundStack[focus].naturals.toString()}}</em>
           </p>
+          <p class="mat-subheading-1">From Bottom: <em>{{boundStack[focus].bottomPosition}}</em></p>
         </div>
       </div>
 

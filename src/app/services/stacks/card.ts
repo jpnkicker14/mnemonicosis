@@ -15,6 +15,10 @@ export class Card {
     this.naturals = naturals ?? [];
   }
 
+  get bottomPosition(): number | null {
+    return this.position ? (53 - this.position) : null;
+  }
+
   get isNatural(): boolean {
     return this.naturals.length > 0;
   }
