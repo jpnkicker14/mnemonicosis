@@ -1,17 +1,22 @@
 import {Suit} from './enums/suit.enum';
 import {CardValue} from './enums/card-value.enum';
+import {NaturalEnum} from './enums/natural.enum';
 
 export class Card {
   value: CardValue
   suit: Suit
   position?: number;
-  isNatural?: boolean;
+  naturals: Array<NaturalEnum>
 
-  constructor(value: CardValue, suit: Suit, position?: number, isNatural = false) {
+  constructor(value: CardValue, suit: Suit, position?: number, naturals?: Array<NaturalEnum>) {
     this.value = value;
     this.suit = suit;
     this.position = position;
-    this.isNatural = isNatural;
+    this.naturals = naturals ?? [];
+  }
+
+  get isNatural(): boolean {
+    return this.naturals.length > 0;
   }
 
   get wordValue(): string {

@@ -133,8 +133,11 @@
 
         </div>
 
-        <div class="face front" fxLayoutAlign="center center">
+        <div class="face front" fxLayout="column" fxLayoutAlign="center center">
           <p class="mat-headline">Position: <b>{{boundStack[focus].position}}</b></p>
+          <p *ngIf="boundStack[focus].isNatural" class="mat-title">Natural:
+            <em>{{boundStack[focus].naturals.toString()}}</em>
+          </p>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import {Card} from '../card';
 import {CardValue} from '../enums/card-value.enum';
 import {Suit} from '../enums/suit.enum';
 import {StackGroup} from '../enums/stack-group.enum';
+import {NaturalEnum} from '../enums/natural.enum';
 
 // todo natural (maybe not here)
 export const aronson = new Stack(
@@ -19,12 +20,12 @@ export const aronson = new Stack(
     new Card(CardValue.three, Suit.hearts, 7),
     new Card(CardValue.six, Suit.clubs, 8),
     new Card(CardValue.eight, Suit.diamonds, 9),
-    new Card(CardValue.ace, Suit.clubs, 10),
-    new Card(CardValue.ten, Suit.spades, 11),
-    new Card(CardValue.five, Suit.hearts, 12),
-    new Card(CardValue.two, Suit.diamonds, 13),
-    new Card(CardValue.king, Suit.diamonds, 14),
-    new Card(CardValue.seven, Suit.diamonds, 15),
+    new Card(CardValue.ace, Suit.clubs, 10, [NaturalEnum.speller]),
+    new Card(CardValue.ten, Suit.spades, 11, [NaturalEnum.speller]),
+    new Card(CardValue.five, Suit.hearts, 12, [NaturalEnum.speller]),
+    new Card(CardValue.two, Suit.diamonds, 13, [NaturalEnum.speller]),
+    new Card(CardValue.king, Suit.diamonds, 14, [NaturalEnum.speller]),
+    new Card(CardValue.seven, Suit.diamonds, 15, [NaturalEnum.speller]),
     new Card(CardValue.eight, Suit.clubs, 16),
     new Card(CardValue.three, Suit.spades, 17),
     new Card(CardValue.ace, Suit.diamonds, 18),
