@@ -26,6 +26,7 @@ import {CardMinValidatorDirective} from './directives/card-min-validator/card-mi
 import {CardMaxValidatorDirective} from './directives/card-max-validator/card-max-validator.directive';
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { TrainerValidatorDirective } from './directives/trainer-validator/trainer-validator.directive';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MemDeckTrainerComponent,
     MnemonicosisComponent,
     CardMinValidatorDirective,
-    CardMaxValidatorDirective
+    CardMaxValidatorDirective,
+    TrainerValidatorDirective
   ],
   imports: [
     CommonModule,

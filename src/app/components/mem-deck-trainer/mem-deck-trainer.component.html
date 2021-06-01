@@ -5,12 +5,14 @@
       <mat-card-content fxLayout="row" fxLayoutAlign="center none">
         <form
           #form="ngForm"
+          appTrainerValidator
           (ngSubmit)="update()"
           fxLayout="row"
           fxLayout.lt-sm="column"
           fxLayoutAlign="space-between center"
           fxLayoutAlign.lt-sm="space-between"
           fxLayoutGap.lt-sm="8px">
+
           <mat-form-field
             appearance="standard"
             fxFlex.lt-sm="100">
@@ -21,17 +23,21 @@
                    type="number"
                    name="start"
                    [(ngModel)]="deckParams.start"
+                   [errorStateMatcher]="errorMatcher"
                    appCardMinValidator
                    appCardMaxValidator
             />
             <mat-error *ngIf="form.controls['start']?.hasError('required')">
-              Please enter outer limit
+              Please enter Start limit
             </mat-error>
             <mat-error *ngIf="form.controls['start']?.hasError('max')">
               {{form.controls['start'].errors?.max}}
             </mat-error>
             <mat-error *ngIf="form.controls['start']?.hasError('min')">
               {{form.controls['start'].errors?.min}}
+            </mat-error>
+            <mat-error *ngIf="form.hasError('illogical')">
+              Cannot have Start larger than End
             </mat-error>
           </mat-form-field>
 
@@ -44,16 +50,20 @@
                    type="number"
                    name="end"
                    [(ngModel)]="deckParams.end"
+                   [errorStateMatcher]="errorMatcher"
                    appCardMaxValidator
                    appCardMinValidator/>
             <mat-error *ngIf="form.controls['end']?.hasError('required')">
-              Please enter outer limit
+              Please enter End limit
             </mat-error>
             <mat-error *ngIf="form.controls['end']?.hasError('max')">
               {{form.controls['end'].errors?.max}}
             </mat-error>
             <mat-error *ngIf="form.controls['end']?.hasError('min')">
               {{form.controls['min'].errors?.min}}
+            </mat-error>
+            <mat-error *ngIf="form.hasError('illogical')">
+              Cannot have Start larger than End
             </mat-error>
           </mat-form-field>
 
@@ -139,8 +149,8 @@
     <div fxLayout="row" fxLayoutAlign="center none">
       <mat-slide-toggle
         [(ngModel)]="showImage"
-        [ngModelOptions]="{standAlone: true}"
-        name="image">Show Card
+        [ngModelOptions]="{standalone: true}"
+      name="image">Show Card
       </mat-slide-toggle>
     </div>
   </div>

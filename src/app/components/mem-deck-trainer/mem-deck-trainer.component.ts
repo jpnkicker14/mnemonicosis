@@ -5,9 +5,18 @@ import {StacksService} from '../../services/stacks/stacks.service';
 import {NameService} from '../../services/name/name.service';
 import {DeckStateEnum} from './deck-state.enum';
 import {Card} from '../../services/stacks/card';
-import {NgForm} from '@angular/forms';
+import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import {CardDisplayEnum} from './card-display.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ErrorStateMatcher} from '@angular/material/core';
+
+/** Error when the parent is invalid */
+class CrossFieldErrorMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return !!(control?.dirty && form?.invalid);
+  }
+}
+
 
 @Component({
   selector: 'app-mem-deck-trainer',
@@ -35,10 +44,11 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class MemDeckTrainerComponent implements OnInit {
   stack: Stack | null;
   boundStack: Array<Card>;
-  deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum};
+  deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum };
   focus: number;
   state: "default" | "flipped"
   showImage: boolean;
+  errorMatcher: CrossFieldErrorMatcher
 
   @ViewChild('form') form?: NgForm;
 
@@ -48,6 +58,7 @@ export class MemDeckTrainerComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private stacksService: StacksService,
               private nameService: NameService) {
+    this.errorMatcher = new CrossFieldErrorMatcher();
     this.stack = null;
     this.boundStack = [];
     this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
