@@ -1,9 +1,97 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div fxFlex="95%">
+  <div *ngIf="stack$ | async as stack; else selectStack" fxFlex="95%">
     <mat-card>
-      <mat-card-content fxLayout="row" fxLayoutAlign="center none">
-        <p>Coming Soon</p>
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
+        <button mat-button>
+          Spread
+        </button>
+
+        <button mat-button>
+          Cut Off
+        </button>
+
+        <button mat-button>
+          Psych-Force
+        </button>
+
+        <button mat-button>
+          Turn Over
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="newCardHandler(stack)">
+          New Card
+        </button>
       </mat-card-content>
     </mat-card>
+
+    <div class="alert alert-info"
+         role="alert"
+          *ngFor="let alert of alerts">
+      {{alert}}
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <div *ngIf="cardInfo$ | async as cardInfo; else selectCard">
+        <div class="card-display"
+             fxLayout="row" fxLayoutAlign="space-around center">
+
+          <div class="card"
+               *ngIf="cardInfo?.card as card"
+               (click)="cardClicked()"
+               [@cardFlip]="state"
+               fxLayout="column">
+
+            <div class="face back" fxLayout="column" fxLayoutAlign="center center">
+              <h1 class="mat-headline">{{cardInfo.name}} names the: </h1>
+
+              <img *ngIf="showImage; else textCard"
+                   [src]="'assets/imgs/cards/' + card.wordValue + '_' + card.suit + '.jpg'"/>
+
+              <ng-template #textCard>
+                <app-card-value [card]="card"></app-card-value>
+              </ng-template>
+
+            </div>
+
+            <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+              <p class="mat-headline">Position: <b>{{card.position}}</b></p>
+              <p class="mat-headline">Spectator: <b>{{cardInfo.name}}</b> ({{cardInfo.name.length}})</p>
+
+              <p *ngIf="card.isNatural" class="mat-title">Natural:
+                <em>{{card.naturals.toString()}}</em>
+              </p>
+              <p class="mat-subheading-1">From Bottom: <em>{{card.bottomPosition}}</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center none">
+          <mat-slide-toggle
+            [(ngModel)]="showImage"
+            [ngModelOptions]="{standalone: true}"
+            name="image">Show Card
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <ng-template #selectCard>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="newCardHandler(stack)">
+          New Card
+        </button>
+      </ng-template>
+
+    </div>
   </div>
+
+  <ng-template #selectStack>
+    <div fxLayoutAlign="center center">
+      <p>Select Stack from menu.</p>
+    </div>
+  </ng-template>
 </div>

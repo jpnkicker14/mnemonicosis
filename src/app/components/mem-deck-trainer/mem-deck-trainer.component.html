@@ -117,9 +117,6 @@
            fxLayout="column">
 
         <div class="face back" fxLayoutAlign="center center">
-
-          <!--          <img [src]="'https://source.unsplash.com/' + data.imageId + '/200x300'"/>-->
-
           <img *ngIf="showImage; else textCard"
                [src]="'assets/imgs/cards/' + boundStack[focus].wordValue + '_' + boundStack[focus].suit + '.jpg'"/>
 
