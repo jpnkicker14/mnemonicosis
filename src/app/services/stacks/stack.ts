@@ -17,4 +17,8 @@ export class Stack {
   get isCyclical(): boolean {
     return this.group === StackGroup.Cyclical;
   }
+
+  get faceUpCards(): Array<Card> {
+    return [...this.cards].reverse();
+  }
 }

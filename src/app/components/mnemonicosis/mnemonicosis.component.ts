@@ -5,9 +5,12 @@ import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Stack} from '../../services/stacks/stack';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map, take} from 'rxjs/operators';
+import {filter, map, take} from 'rxjs/operators';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatDialog} from '@angular/material/dialog';
+import {SpreadDialogComponent} from '../spread-dialog/spread-dialog.component';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 
 interface NewCardInfo {
   card: Card,
@@ -40,7 +43,11 @@ interface NewCardInfo {
 export class MnemonicosisComponent implements OnInit {
   state: "default" | "flipped"
   showImage: boolean;
-  alerts: Array<string>;
+  isLtSm: boolean;
+  cutCard: Card | null;
+  cutCardPanelOpenState: boolean;
+  psychGuess: number | null;
+  faceDown: boolean;
 
   newCardSub: BehaviorSubject<NewCardInfo | null>;
   stack$: Observable<Stack | undefined>;
@@ -48,11 +55,18 @@ export class MnemonicosisComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute,
+              private dialog: MatDialog,
+              private breakpointObserver: BreakpointObserver,
               private stacksService: StacksService,
               private nameService: NameService) {
     this.state = 'default';
     this.showImage = false;
-    this.alerts = [];
+    this.isLtSm = false;
+    this.cutCard = null;
+    this.cutCardPanelOpenState = false;
+    this.psychGuess = null;
+    this.faceDown = true;
+
     this.newCardSub = new BehaviorSubject<NewCardInfo | null>(null);
     this.cardInfo$ = this.newCardSub.asObservable();
     this.stack$ = this.route.queryParams
@@ -62,7 +76,13 @@ export class MnemonicosisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.breakpointObserver.observe([
+      Breakpoints.XSmall,
+      Breakpoints.Small
+    ])
+      .subscribe((state: BreakpointState) => {
+        this.isLtSm = state.breakpoints[Breakpoints.XSmall] || state.breakpoints[Breakpoints.Small];
+      })
   }
 
   cardClicked() {
@@ -74,7 +94,9 @@ export class MnemonicosisComponent implements OnInit {
   }
 
   newCardHandler(stack: Stack): void {
-    this.alerts = [];
+    this.state = 'default';
+    this.cutCard = null;
+    this.psychGuess = null;
     this.nameService.getName()
       .pipe(take(1))
       .subscribe((name: string) => {
@@ -83,5 +105,33 @@ export class MnemonicosisComponent implements OnInit {
           name: name
         })
       });
+  }
+
+  openSpreadHandler(stack: Stack) {
+    this.dialog.open(SpreadDialogComponent, {
+      data: {
+        cards: stack.cards
+      },
+      width: this.isLtSm ? '100%' : '60%'
+    });
+  }
+
+  cutCards(stack: Stack, min: number, max: number): void {
+    // todo deck face up
+    this.cutCard = stack.cards[(Utils.getRand(min, max) - 1)];
+  }
+
+  psychForceHandler(cutCard?: Card | null) {
+    // todo deck face up
+    this.cardInfo$
+      .pipe(
+        take(1),
+        filter((cardInfo: NewCardInfo | null): cardInfo is NewCardInfo => cardInfo != null),
+        map((cardInfo: NewCardInfo) => cardInfo.card)
+      )
+      .subscribe((card: Card) => {
+        const tolerance = Math.abs((card.position ?? 1) - (cutCard?.position ?? 1));
+        this.psychGuess = Utils.getRand(1, tolerance + 1);
+      })
   }
 }

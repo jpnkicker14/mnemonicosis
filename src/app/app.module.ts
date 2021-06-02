@@ -29,6 +29,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { TrainerValidatorDirective } from './directives/trainer-validator/trainer-validator.directive';
 import { HomeComponent } from './components/home/home.component';
 import { CardValueComponent } from './components/card-value/card-value.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { SpreadComponent } from './components/spread/spread.component';
+import { SpreadDialogComponent } from './components/spread-dialog/spread-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,9 @@ import { CardValueComponent } from './components/card-value/card-value.component
     CardMaxValidatorDirective,
     TrainerValidatorDirective,
     HomeComponent,
-    CardValueComponent
+    CardValueComponent,
+    SpreadComponent,
+    SpreadDialogComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +73,9 @@ import { CardValueComponent } from './components/card-value/card-value.component
     MatSelectModule,
     MatButtonToggleModule,
     MatCardModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

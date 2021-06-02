@@ -3,14 +3,8 @@
        fxFlex="95%">
     <mat-card>
       <mat-card-title>{{stack.name}}</mat-card-title>
-      <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
-        <div *ngFor="let group of [0, 13, 26, 39]" fxLayout="column">
-          <app-card-value *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] "
-                          [card]="stack.cards[((group + i) -1)]"
-                          [cardClass]="'mat-title'">
-
-          </app-card-value>
-        </div>
+      <mat-card-content>
+        <app-spread [cards]="stack.cards"></app-spread>
       </mat-card-content>
     </mat-card>
   </div>

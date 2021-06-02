@@ -1,37 +1,79 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
   <div *ngIf="stack$ | async as stack; else selectStack" fxFlex="95%">
     <mat-card>
-      <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
-        <button mat-button>
-          Spread
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
+        <button mat-icon-button
+                aria-label="spread"
+                (click)="openSpreadHandler(stack)">
+          <mat-icon>more_horiz</mat-icon>
         </button>
 
-        <button mat-button>
-          Cut Off
+        <button mat-icon-button
+                aria-label="cut off"
+                [disabled]="!(cardInfo$ | async)"
+                [matMenuTriggerFor]="cutMenu">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <mat-menu #cutMenu="matMenu">
+          <button mat-menu-item (click)="cutCards(stack, 1, 13)">0 ~ 1/4</button>
+          <button mat-menu-item (click)="cutCards(stack,10, 16)">~ 1/4</button>
+          <button mat-menu-item (click)="cutCards(stack,13, 21)">~ 1/3</button>
+          <button mat-menu-item (click)="cutCards(stack,21, 30)">~ 1/2</button>
+          <button mat-menu-item (click)="cutCards(stack,30, 38)">~ 2/3</button>
+          <button mat-menu-item (click)="cutCards(stack,36, 43)">~ 3/4</button>
+          <button mat-menu-item (click)="cutCards(stack,39, 52)">3/4 ~ 1</button>
+          <button mat-menu-item (click)="cutCards(stack,1, 52)">Random</button>
+        </mat-menu>
+
+        <button mat-icon-button
+                aria-label="psych-force"
+                (click)="psychForceHandler(cutCard)"
+                [disabled]="!(cardInfo$ | async)">
+          <mat-icon>chat</mat-icon>
         </button>
 
-        <button mat-button>
-          Psych-Force
-        </button>
-
-        <button mat-button>
-          Turn Over
-        </button>
+        <mat-slide-toggle
+          [checked]="faceDown"
+          [disabled]="!(cardInfo$ | async)"
+        >
+          Face down
+        </mat-slide-toggle>
 
         <button
-          mat-raised-button
+          mat-icon-button
           color="primary"
           (click)="newCardHandler(stack)">
-          New Card
+          <mat-icon>restart_alt</mat-icon>
         </button>
       </mat-card-content>
     </mat-card>
 
     <div class="alert alert-info"
          role="alert"
-          *ngFor="let alert of alerts">
-      {{alert}}
+         *ngIf="psychGuess">
+      Spectator chooses the number: <b>{{psychGuess}}</b>
     </div>
+
+
+    <mat-expansion-panel class="alert alert-info"
+                         role="alert"
+                         *ngIf="cutCard"
+                         (opened)="cutCardPanelOpenState = true"
+                         (closed)="cutCardPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Spectator cuts to: &nbsp;
+          <app-card-value [card]="cutCard" [cardClass]="'mat-body-1'"></app-card-value>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <p>Position: <b>{{cutCard?.position}}</b></p>
+        <p>From Bottom: <em>{{cutCard?.bottomPosition}}</em></p>
+      </div>
+
+    </mat-expansion-panel>
+
 
     <div fxLayout="row" fxLayoutAlign="center center">
       <div *ngIf="cardInfo$ | async as cardInfo; else selectCard">
@@ -56,6 +98,7 @@
 
             </div>
 
+<!--         todo deck face up-->
             <div class="face front" fxLayout="column" fxLayoutAlign="center center">
               <p class="mat-headline">Position: <b>{{card.position}}</b></p>
               <p class="mat-headline">Spectator: <b>{{cardInfo.name}}</b> ({{cardInfo.name.length}})</p>
