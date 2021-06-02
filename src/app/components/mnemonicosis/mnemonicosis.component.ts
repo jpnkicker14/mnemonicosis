@@ -48,6 +48,7 @@ export class MnemonicosisComponent implements OnInit {
   cutCardPanelOpenState: boolean;
   psychGuess: number | null;
   faceDown: boolean;
+  cutCardDifference: number;
 
   newCardSub: BehaviorSubject<NewCardInfo | null>;
   stack$: Observable<Stack | undefined>;
@@ -66,6 +67,7 @@ export class MnemonicosisComponent implements OnInit {
     this.cutCardPanelOpenState = false;
     this.psychGuess = null;
     this.faceDown = true;
+    this.cutCardDifference = 0;
 
     this.newCardSub = new BehaviorSubject<NewCardInfo | null>(null);
     this.cardInfo$ = this.newCardSub.asObservable();
@@ -95,8 +97,7 @@ export class MnemonicosisComponent implements OnInit {
 
   newCardHandler(stack: Stack): void {
     this.state = 'default';
-    this.cutCard = null;
-    this.psychGuess = null;
+    this.reset();
     this.nameService.getName()
       .pipe(take(1))
       .subscribe((name: string) => {
@@ -117,21 +118,31 @@ export class MnemonicosisComponent implements OnInit {
   }
 
   cutCards(stack: Stack, min: number, max: number): void {
-    // todo deck face up
-    this.cutCard = stack.cards[(Utils.getRand(min, max) - 1)];
+    const cards = this.faceDown ? stack.cards : stack.faceUpCards;
+    this.cutCard = cards[(Utils.getRand(min, max) - 1)];
+    const card = this.newCardSub.value?.card;
+    this.cutCardDifference = Math.abs(((this.faceDown ? card?.position : card?.bottomPosition) ?? 0) -
+      ((this.faceDown ? this.cutCard?.position : this.cutCard?.bottomPosition) ?? 0));
   }
 
   psychForceHandler(cutCard?: Card | null) {
-    // todo deck face up
-    this.cardInfo$
-      .pipe(
-        take(1),
-        filter((cardInfo: NewCardInfo | null): cardInfo is NewCardInfo => cardInfo != null),
-        map((cardInfo: NewCardInfo) => cardInfo.card)
-      )
-      .subscribe((card: Card) => {
-        const tolerance = Math.abs((card.position ?? 1) - (cutCard?.position ?? 1));
-        this.psychGuess = Utils.getRand(1, tolerance + 1);
-      })
+    const card = this.newCardSub.value?.card;
+    if (card != null) {
+      const selectedCardPosition = this.faceDown ? (card.position ?? 1) : (card.bottomPosition ?? 52);
+      const cutCardPosition = this.faceDown ? (cutCard?.position ?? 1) : (cutCard?.bottomPosition ?? 52)
+      const tolerance = Math.abs(selectedCardPosition - cutCardPosition);
+      this.psychGuess = Utils.getRand(1, tolerance + 1);
+    }
+  }
+
+  deckOrientationHandler(faceDown: boolean): void {
+    this.reset();
+    this.faceDown = faceDown;
+  }
+
+  private reset(): void {
+    this.cutCard = null;
+    this.psychGuess = null;
+    this.cutCardDifference = 0;
   }
 }

@@ -33,7 +33,9 @@
         </button>
 
         <mat-slide-toggle
-          [checked]="faceDown"
+          [(ngModel)]="faceDown"
+          (ngModelChange)="deckOrientationHandler($event)"
+          [ngModelOptions]="{standalone: true}"
           [disabled]="!(cardInfo$ | async)"
         >
           Face down
@@ -68,9 +70,10 @@
       </mat-expansion-panel-header>
 
       <div fxLayout="row" fxLayoutAlign="space-between">
-        <p>Position: <b>{{cutCard?.position}}</b></p>
-        <p>From Bottom: <em>{{cutCard?.bottomPosition}}</em></p>
+        <p>Position: <b>{{faceDown ? cutCard?.position : cutCard?.bottomPosition}}</b></p>
+        <p>Difference: <b>{{cutCardDifference}}</b></p>
       </div>
+      <small>From Bottom: <em>{{faceDown ? cutCard?.bottomPosition : cutCard?.position}}</em></small>
 
     </mat-expansion-panel>
 
@@ -98,15 +101,15 @@
 
             </div>
 
-<!--         todo deck face up-->
             <div class="face front" fxLayout="column" fxLayoutAlign="center center">
-              <p class="mat-headline">Position: <b>{{card.position}}</b></p>
+              <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
+              <p class="mat-headline"><span *ngIf="!faceDown">*</span>Position: <b>{{faceDown ? card.position : card.bottomPosition}}</b></p>
               <p class="mat-headline">Spectator: <b>{{cardInfo.name}}</b> ({{cardInfo.name.length}})</p>
 
               <p *ngIf="card.isNatural" class="mat-title">Natural:
                 <em>{{card.naturals.toString()}}</em>
               </p>
-              <p class="mat-subheading-1">From Bottom: <em>{{card.bottomPosition}}</em></p>
+              <p class="mat-subheading-1"><span *ngIf="!faceDown">*</span>From Bottom: <em>{{faceDown ? card.bottomPosition : card.position}}</em></p>
             </div>
           </div>
         </div>
