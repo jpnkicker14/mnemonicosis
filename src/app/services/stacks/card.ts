@@ -7,8 +7,10 @@ export class Card {
   suit: Suit
   position?: number;
   naturals: Array<NaturalEnum>
+  id: string;
 
   constructor(value: CardValue, suit: Suit, position?: number, naturals?: Array<NaturalEnum>) {
+    this.id = value + suit;
     this.value = value;
     this.suit = suit;
     this.position = position;

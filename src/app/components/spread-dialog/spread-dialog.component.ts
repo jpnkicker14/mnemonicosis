@@ -9,7 +9,7 @@ import {Card} from '../../services/stacks/card';
 })
 export class SpreadDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {cards: Array<Card>}) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {cards: Array<Card>, selectedCardId: string}) { }
 
   ngOnInit(): void {
   }

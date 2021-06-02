@@ -111,7 +111,8 @@ export class MnemonicosisComponent implements OnInit {
   openSpreadHandler(stack: Stack) {
     this.dialog.open(SpreadDialogComponent, {
       data: {
-        cards: stack.cards
+        cards: stack.cards,
+        selectedCardId: this.newCardSub.value?.card.id
       },
       width: this.isLtSm ? '100%' : '60%'
     });

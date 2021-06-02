@@ -7,6 +7,7 @@ import {Card} from '../../services/stacks/card';
   styleUrls: ['./spread.component.sass']
 })
 export class SpreadComponent implements OnInit {
+  @Input() selectedCardId?: string;
   @Input() cards: Array<Card>;
 
   constructor() {
