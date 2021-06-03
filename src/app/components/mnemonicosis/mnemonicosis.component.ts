@@ -4,8 +4,8 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Stack} from '../../services/stacks/stack';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {filter, map, take} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, OperatorFunction} from 'rxjs';
+import {filter, map, take, tap} from 'rxjs/operators';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
@@ -50,10 +50,9 @@ export class MnemonicosisComponent implements OnInit {
   faceDown: boolean;
   cutCardDifference: number;
 
-  newCardSub: BehaviorSubject<NewCardInfo | null>;
-  stack$: Observable<Stack | undefined>;
-  cardInfo$: Observable<NewCardInfo | null>
-
+  newCardSub: BehaviorSubject<Card | null>;
+  stack$: Observable<Stack>;
+  cardInfo$: Observable<NewCardInfo>
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -69,15 +68,31 @@ export class MnemonicosisComponent implements OnInit {
     this.faceDown = true;
     this.cutCardDifference = 0;
 
-    this.newCardSub = new BehaviorSubject<NewCardInfo | null>(null);
-    this.cardInfo$ = this.newCardSub.asObservable();
+    this.newCardSub = new BehaviorSubject<Card | null>(null);
+    this.cardInfo$ = combineLatest([
+      this.newCardSub.asObservable(),
+      this.nameService.getName()
+    ]).pipe(
+      map(([card, name]: [Card | null, string]): NewCardInfo => {
+        return {
+          card: <Card>card,
+          name: name
+        } as NewCardInfo
+      })
+    );
+
     this.stack$ = this.route.queryParams
       .pipe(
-        map((param: Params) => this.stacksService.getStack(param?.id))
+        map((param: Params) => this.stacksService.getStack(param?.id)),
+        filter((stack: Stack | undefined)  => stack != null) as OperatorFunction<Stack | undefined, Stack>,
+        tap((stack: Stack) => {
+          this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
+        })
       )
   }
 
   ngOnInit(): void {
+    // newCardHandler
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
       Breakpoints.Small
@@ -98,42 +113,31 @@ export class MnemonicosisComponent implements OnInit {
   newCardHandler(stack: Stack): void {
     this.state = 'default';
     this.reset();
-    this.nameService.getName()
-      .pipe(take(1))
-      .subscribe((name: string) => {
-        this.newCardSub.next({
-          card: stack.cards[Utils.getRand(0, stack.cards.length - 1)],
-          name: name
-        })
-      });
+    this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
   }
 
-  openSpreadHandler(stack: Stack) {
+  openSpreadHandler(stack: Stack, selectedCard: Card) {
     this.dialog.open(SpreadDialogComponent, {
       data: {
         cards: stack.cards,
-        selectedCardId: this.newCardSub.value?.card.id
+        selectedCardId: selectedCard.id
       },
       width: this.isLtSm ? '100%' : '60%'
     });
   }
 
-  cutCards(stack: Stack, min: number, max: number): void {
+  cutCards(stack: Stack, selectedCard: Card, min: number, max: number): void {
     const cards = this.faceDown ? stack.cards : stack.faceUpCards;
     this.cutCard = cards[(Utils.getRand(min, max) - 1)];
-    const card = this.newCardSub.value?.card;
-    this.cutCardDifference = Math.abs(((this.faceDown ? card?.position : card?.bottomPosition) ?? 0) -
+    this.cutCardDifference = Math.abs(((this.faceDown ? selectedCard?.position : selectedCard?.bottomPosition) ?? 0) -
       ((this.faceDown ? this.cutCard?.position : this.cutCard?.bottomPosition) ?? 0));
   }
 
-  psychForceHandler(cutCard?: Card | null) {
-    const card = this.newCardSub.value?.card;
-    if (card != null) {
-      const selectedCardPosition = this.faceDown ? (card.position ?? 1) : (card.bottomPosition ?? 52);
-      const cutCardPosition = this.faceDown ? (cutCard?.position ?? 1) : (cutCard?.bottomPosition ?? 52)
-      const tolerance = Math.abs(selectedCardPosition - cutCardPosition);
-      this.psychGuess = Utils.getRand(1, tolerance + 1);
-    }
+  psychForceHandler(selectedCard: Card, cutCard?: Card | null) {
+    const selectedCardPosition = this.faceDown ? (selectedCard.position ?? 1) : (selectedCard.bottomPosition ?? 52);
+    const cutCardPosition = this.faceDown ? (cutCard?.position ?? 1) : (cutCard?.bottomPosition ?? 52)
+    const tolerance = Math.abs(selectedCardPosition - cutCardPosition);
+    this.psychGuess = Utils.getRand(1, tolerance + 1);
   }
 
   deckOrientationHandler(faceDown: boolean): void {

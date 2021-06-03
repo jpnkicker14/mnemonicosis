@@ -1,138 +1,130 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
   <div *ngIf="stack$ | async as stack; else selectStack" fxFlex="95%">
-    <mat-card>
-      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
-        <button mat-icon-button
-                aria-label="spread"
-                (click)="openSpreadHandler(stack)">
-          <mat-icon>more_horiz</mat-icon>
-        </button>
+    <ng-container *ngIf="cardInfo$ | async as cardInfo">
+      <mat-card>
+        <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
+          <button mat-icon-button
+                  aria-label="spread"
+                  (click)="openSpreadHandler(stack, cardInfo.card)">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
 
-        <button mat-icon-button
-                aria-label="cut off"
-                [disabled]="!(cardInfo$ | async)"
-                [matMenuTriggerFor]="cutMenu">
-          <mat-icon>content_copy</mat-icon>
-        </button>
-        <mat-menu #cutMenu="matMenu">
-          <button mat-menu-item (click)="cutCards(stack, 1, 13)">0 ~ 1/4</button>
-          <button mat-menu-item (click)="cutCards(stack,10, 16)">~ 1/4</button>
-          <button mat-menu-item (click)="cutCards(stack,13, 21)">~ 1/3</button>
-          <button mat-menu-item (click)="cutCards(stack,21, 30)">~ 1/2</button>
-          <button mat-menu-item (click)="cutCards(stack,30, 38)">~ 2/3</button>
-          <button mat-menu-item (click)="cutCards(stack,36, 43)">~ 3/4</button>
-          <button mat-menu-item (click)="cutCards(stack,39, 52)">3/4 ~ 1</button>
-          <button mat-menu-item (click)="cutCards(stack,1, 52)">Random</button>
-        </mat-menu>
+          <button mat-icon-button
+                  aria-label="cut off"
+                  [matMenuTriggerFor]="cutMenu">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <mat-menu #cutMenu="matMenu">
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card, 1, 13)">0 ~ 1/4</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,10, 16)">~ 1/4</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,13, 21)">~ 1/3</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,21, 30)">~ 1/2</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,30, 38)">~ 2/3</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,36, 43)">~ 3/4</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,39, 52)">3/4 ~ 1</button>
+            <button mat-menu-item (click)="cutCards(stack, cardInfo.card,1, 52)">Random</button>
+          </mat-menu>
 
-        <button mat-icon-button
-                aria-label="psych-force"
-                (click)="psychForceHandler(cutCard)"
-                [disabled]="!(cardInfo$ | async)">
-          <mat-icon>chat</mat-icon>
-        </button>
+          <button mat-icon-button
+                  aria-label="psych-force"
+                  (click)="psychForceHandler(cardInfo.card, cutCard)">
+            <mat-icon>chat</mat-icon>
+          </button>
 
-        <mat-slide-toggle
-          [(ngModel)]="faceDown"
-          (ngModelChange)="deckOrientationHandler($event)"
-          [ngModelOptions]="{standalone: true}"
-          [disabled]="!(cardInfo$ | async)"
-        >
-          Face down
-        </mat-slide-toggle>
+          <mat-slide-toggle
+            [(ngModel)]="faceDown"
+            (ngModelChange)="deckOrientationHandler($event)"
+            [ngModelOptions]="{standalone: true}"
+          >
+            Face down
+          </mat-slide-toggle>
+        </mat-card-content>
+      </mat-card>
 
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="newCardHandler(stack)">
-          <mat-icon>restart_alt</mat-icon>
-        </button>
-      </mat-card-content>
-    </mat-card>
-
-    <div class="alert alert-info"
-         role="alert"
-         *ngIf="psychGuess">
-      Spectator chooses the number: <b>{{psychGuess}}</b>
-    </div>
-
-
-    <mat-expansion-panel class="alert alert-info"
-                         role="alert"
-                         *ngIf="cutCard"
-                         (opened)="cutCardPanelOpenState = true"
-                         (closed)="cutCardPanelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Spectator cuts to: &nbsp;
-          <app-card-value [card]="cutCard" [cardClass]="'mat-body-1'"></app-card-value>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <p>Position: <b>{{faceDown ? cutCard?.position : cutCard?.bottomPosition}}</b></p>
-        <p>Difference: <b>{{cutCardDifference}}</b></p>
+      <div class="alert alert-info"
+           role="alert"
+           *ngIf="psychGuess">
+        Spectator chooses the number: <b>{{psychGuess}}</b>
       </div>
-      <small>From Bottom: <em>{{faceDown ? cutCard?.bottomPosition : cutCard?.position}}</em></small>
-
-    </mat-expansion-panel>
 
 
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <div *ngIf="cardInfo$ | async as cardInfo; else selectCard">
-        <div class="card-display"
-             fxLayout="row" fxLayoutAlign="space-around center">
+      <mat-expansion-panel class="alert alert-info"
+                           role="alert"
+                           *ngIf="cutCard"
+                           (opened)="cutCardPanelOpenState = true"
+                           (closed)="cutCardPanelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Spectator cuts to: &nbsp;
+            <app-card-value [card]="cutCard" [cardClass]="'mat-body-1'"></app-card-value>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-          <div class="card"
-               *ngIf="cardInfo?.card as card"
-               (click)="cardClicked()"
-               [@cardFlip]="state"
-               fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Position: <b>{{faceDown ? cutCard?.position : cutCard?.bottomPosition}}</b></p>
+          <p>Difference: <b>{{cutCardDifference}}</b></p>
+        </div>
+        <small>From Bottom: <em>{{faceDown ? cutCard?.bottomPosition : cutCard?.position}}</em></small>
 
-            <div class="face back" fxLayout="column" fxLayoutAlign="center center">
-              <h1 class="mat-headline">{{cardInfo.name}} names the: </h1>
+      </mat-expansion-panel>
 
-              <img *ngIf="showImage; else textCard"
-                   [src]="'assets/imgs/cards/' + card.wordValue + '_' + card.suit + '.jpg'"/>
 
-              <ng-template #textCard>
-                <app-card-value [card]="card"></app-card-value>
-              </ng-template>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div>
+          <div class="card-display"
+               fxLayout="row" fxLayoutAlign="space-around center">
 
+            <div class="card"
+                 *ngIf="cardInfo?.card as card"
+                 (click)="cardClicked()"
+                 [@cardFlip]="state"
+                 fxLayout="column">
+
+              <div class="face back" fxLayout="column" fxLayoutAlign="center center">
+                <h1 class="mat-headline">{{cardInfo.name}} names the: </h1>
+
+                <img *ngIf="showImage; else textCard"
+                     [src]="'assets/imgs/cards/' + card.wordValue + '_' + card.suit + '.jpg'"/>
+
+                <ng-template #textCard>
+                  <app-card-value [card]="card"></app-card-value>
+                </ng-template>
+
+              </div>
+
+              <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+                <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
+                <p class="mat-headline"><span *ngIf="!faceDown">*</span>Position:
+                  <b>{{faceDown ? card.position : card.bottomPosition}}</b></p>
+                <p class="mat-headline">Spectator: <b>{{cardInfo.name}}</b> ({{cardInfo.name.length}})</p>
+
+                <p *ngIf="card.isNatural" class="mat-title">Natural:
+                  <em>{{card.naturals.toString()}}</em>
+                </p>
+                <p class="mat-subheading-1"><span *ngIf="!faceDown">*</span>From Bottom:
+                  <em>{{faceDown ? card.bottomPosition : card.position}}</em></p>
+              </div>
             </div>
+          </div>
 
-            <div class="face front" fxLayout="column" fxLayoutAlign="center center">
-              <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
-              <p class="mat-headline"><span *ngIf="!faceDown">*</span>Position: <b>{{faceDown ? card.position : card.bottomPosition}}</b></p>
-              <p class="mat-headline">Spectator: <b>{{cardInfo.name}}</b> ({{cardInfo.name.length}})</p>
-
-              <p *ngIf="card.isNatural" class="mat-title">Natural:
-                <em>{{card.naturals.toString()}}</em>
-              </p>
-              <p class="mat-subheading-1"><span *ngIf="!faceDown">*</span>From Bottom: <em>{{faceDown ? card.bottomPosition : card.position}}</em></p>
-            </div>
+          <div fxLayout="row" fxLayoutAlign="center none">
+            <mat-slide-toggle
+              [(ngModel)]="showImage"
+              [ngModelOptions]="{standalone: true}"
+              name="image">Show Card
+            </mat-slide-toggle>
           </div>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="center none">
-          <mat-slide-toggle
-            [(ngModel)]="showImage"
-            [ngModelOptions]="{standalone: true}"
-            name="image">Show Card
-          </mat-slide-toggle>
+        <div class="fab-container">
+          <button mat-fab color="primary"
+                  aria-label="new card"
+                  (click)="newCardHandler(stack)">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
-
-      <ng-template #selectCard>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="newCardHandler(stack)">
-          New Card
-        </button>
-      </ng-template>
-
-    </div>
+    </ng-container>
   </div>
 
   <ng-template #selectStack>
