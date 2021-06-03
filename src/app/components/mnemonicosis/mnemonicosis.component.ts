@@ -5,7 +5,7 @@ import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Stack} from '../../services/stacks/stack';
 import {BehaviorSubject, combineLatest, Observable, OperatorFunction} from 'rxjs';
-import {filter, map, take, tap} from 'rxjs/operators';
+import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
@@ -69,22 +69,25 @@ export class MnemonicosisComponent implements OnInit {
     this.cutCardDifference = 0;
 
     this.newCardSub = new BehaviorSubject<Card | null>(null);
-    this.cardInfo$ = combineLatest([
-      this.newCardSub.asObservable(),
-      this.nameService.getName()
-    ]).pipe(
-      map(([card, name]: [Card | null, string]): NewCardInfo => {
-        return {
-          card: <Card>card,
-          name: name
-        } as NewCardInfo
-      })
-    );
+    this.cardInfo$ = this.newCardSub.asObservable()
+      .pipe(
+        switchMap((card: Card | null) => {
+          return this.nameService.getName()
+            .pipe(
+              map((name: string) => {
+                return {
+                  card: card,
+                  name: name
+                } as NewCardInfo
+              })
+            )
+        })
+      );
 
     this.stack$ = this.route.queryParams
       .pipe(
         map((param: Params) => this.stacksService.getStack(param?.id)),
-        filter((stack: Stack | undefined)  => stack != null) as OperatorFunction<Stack | undefined, Stack>,
+        filter((stack: Stack | undefined) => stack != null) as OperatorFunction<Stack | undefined, Stack>,
         tap((stack: Stack) => {
           this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
         })
