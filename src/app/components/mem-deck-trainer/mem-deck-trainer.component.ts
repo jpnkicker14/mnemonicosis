@@ -43,7 +43,6 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   ]
 })
 export class MemDeckTrainerComponent implements OnInit {
-  // stack: Stack | null;
   boundStack: Array<Card>;
   deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum };
   focus: number;
@@ -61,7 +60,6 @@ export class MemDeckTrainerComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private stacksService: StacksService) {
     this.errorMatcher = new CrossFieldErrorMatcher();
-    // this.stack = null;
     this.boundStack = [];
     this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
     this.state = 'default';
