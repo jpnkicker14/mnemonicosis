@@ -49,6 +49,7 @@ export class MemDeckTrainerComponent implements OnInit {
   state: "default" | "flipped"
   showImage: boolean;
   errorMatcher: CrossFieldErrorMatcher
+  disableAnimation: boolean;
 
   stack$: Observable<Stack>;
 
@@ -65,6 +66,7 @@ export class MemDeckTrainerComponent implements OnInit {
     this.state = 'default';
     this.focus = 0;
     this.showImage = true;
+    this.disableAnimation = false;
 
     this.stack$ = this.route.queryParams
       .pipe(
@@ -96,21 +98,29 @@ export class MemDeckTrainerComponent implements OnInit {
   }
 
   leftClickHandler(): void {
+    this.disableAnimation = true;
     this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     if (this.focus === 0) {
       this.focus = this.boundStack.length - 1;
     } else {
       this.focus--;
     }
+    setTimeout(() => {
+      this.disableAnimation = false;
+    });
   }
 
   rightClickHandler(): void {
+    this.disableAnimation = true;
     this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     if (this.focus === this.boundStack.length - 1) {
       this.focus = 0;
     } else {
       this.focus++;
     }
+    setTimeout(() => {
+      this.disableAnimation = false;
+    });
   }
 
   private shuffle(cards: Array<Card>): Array<Card> {
