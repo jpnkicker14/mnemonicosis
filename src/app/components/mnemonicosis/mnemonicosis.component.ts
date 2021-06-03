@@ -4,19 +4,21 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Stack} from '../../services/stacks/stack';
-import {BehaviorSubject, combineLatest, Observable, OperatorFunction} from 'rxjs';
-import {filter, map, switchMap, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, OperatorFunction} from 'rxjs';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
 import {SpreadDialogComponent} from '../spread-dialog/spread-dialog.component';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 
 interface NewCardInfo {
   card: Card,
   name: string // person name
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-mnemonicosis',
   templateUrl: './mnemonicosis.component.html',
@@ -100,6 +102,7 @@ export class MnemonicosisComponent implements OnInit {
       Breakpoints.XSmall,
       Breakpoints.Small
     ])
+      .pipe(untilDestroyed(this))
       .subscribe((state: BreakpointState) => {
         this.isLtSm = state.breakpoints[Breakpoints.XSmall] || state.breakpoints[Breakpoints.Small];
       })

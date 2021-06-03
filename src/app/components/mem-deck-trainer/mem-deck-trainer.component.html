@@ -1,12 +1,12 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div *ngIf="stack && boundStack; else selectStack"
+  <div *ngIf="stack$ | async as stack; else selectStack"
        fxFlex="95%">
     <mat-card>
       <mat-card-content fxLayout="row" fxLayoutAlign="center none">
         <form
           #form="ngForm"
           appTrainerValidator
-          (ngSubmit)="update()"
+          (ngSubmit)="update(stack, deckParams, $event)"
           fxLayout="row"
           fxLayout.lt-sm="column"
           fxLayoutAlign="space-between center"

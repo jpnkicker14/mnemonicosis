@@ -2,13 +2,14 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Stack} from '../../services/stacks/stack';
 import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
-import {NameService} from '../../services/name/name.service';
 import {DeckStateEnum} from './deck-state.enum';
 import {Card} from '../../services/stacks/card';
 import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import {CardDisplayEnum} from './card-display.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {filter, map, tap} from 'rxjs/operators';
+import {Observable, OperatorFunction} from 'rxjs';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -42,13 +43,15 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
   ]
 })
 export class MemDeckTrainerComponent implements OnInit {
-  stack: Stack | null;
+  // stack: Stack | null;
   boundStack: Array<Card>;
   deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum };
   focus: number;
   state: "default" | "flipped"
   showImage: boolean;
   errorMatcher: CrossFieldErrorMatcher
+
+  stack$: Observable<Stack>;
 
   @ViewChild('form') form?: NgForm;
 
@@ -58,27 +61,31 @@ export class MemDeckTrainerComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private stacksService: StacksService) {
     this.errorMatcher = new CrossFieldErrorMatcher();
-    this.stack = null;
+    // this.stack = null;
     this.boundStack = [];
     this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
     this.state = 'default';
     this.focus = 0;
     this.showImage = true;
+
+    this.stack$ = this.route.queryParams
+      .pipe(
+        map((param: Params) => this.stacksService.getStack(param?.id)),
+        filter((stack: Stack | undefined) => stack != null) as OperatorFunction<Stack | undefined, Stack>,
+        tap((stack: Stack) => {
+          this.boundStack = stack.cards;
+        })
+      )
   }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe((param: Params) => {
-        this.stack = <Stack>this.stacksService.getStack(param?.id);
-        this.boundStack = this.stack?.cards ?? [];
-      })
   }
 
-  update() {
-    this.form?.resetForm(this.deckParams);
-    const boundStack = this.stack?.cards.slice(this.deckParams.start - 1, this.deckParams.end) ?? [];
-    this.boundStack = (this.deckParams.shuffle === DeckStateEnum.shuffle) ? this.shuffle(boundStack) : boundStack;
-    this.state = (this.deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
+  update(stack: Stack, deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum }) {
+    this.form?.resetForm(deckParams);
+    const boundStack = stack?.cards.slice(deckParams.start - 1, deckParams.end) ?? [];
+    this.boundStack = (deckParams.shuffle === DeckStateEnum.shuffle) ? this.shuffle(boundStack) : boundStack;
+    this.state = (deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
     this.focus = 0;
   }
 
