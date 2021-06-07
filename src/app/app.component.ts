@@ -55,7 +55,11 @@ export class AppComponent implements OnInit {
     this.activatedRoute.queryParams
       .pipe(delay(200))
       .subscribe((param: Params) => {
-        this.selectedStack = this.stacksService.getStack(param?.id);
+        if(param?.id == null) {
+          this.stackChangeHandler(this.stacks[0].id);
+        } else {
+          this.selectedStack = this.stacksService.getStack(param?.id);
+        }
       })
   }
 
