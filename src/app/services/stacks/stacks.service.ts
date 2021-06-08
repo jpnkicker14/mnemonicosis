@@ -14,7 +14,7 @@ export class StacksService {
   readonly stacks: Array<Stack> = [
     aronson,
     tamariz,
-    // siStebbins
+    siStebbins
   ]
 
   constructor() {

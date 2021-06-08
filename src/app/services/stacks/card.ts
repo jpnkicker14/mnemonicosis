@@ -9,11 +9,11 @@ export class Card {
   naturals: Array<NaturalEnum>
   id: string;
 
-  constructor(value: CardValue, suit: Suit, position?: number, naturals?: Array<NaturalEnum>) {
+  constructor(value: CardValue, suit: Suit, position: number, naturals?: Array<NaturalEnum>) {
     this.id = value + suit;
     this.value = value;
     this.suit = suit;
-    this.position = position ?? 0;
+    this.position = position;
     this.naturals = naturals ?? [];
   }
 

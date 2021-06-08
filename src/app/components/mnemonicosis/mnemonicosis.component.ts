@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NameService} from '../../services/name/name.service';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Stack} from '../../services/stacks/stack';
@@ -57,7 +57,8 @@ export class MnemonicosisComponent implements OnInit {
   stack$: Observable<Stack>;
   cardInfo$: Observable<NewCardInfo>
 
-  constructor(private dialog: MatDialog,
+  constructor(private router: Router,
+              private dialog: MatDialog,
               private breakpointObserver: BreakpointObserver,
               private stacksService: StacksService,
               private nameService: NameService) {
@@ -88,7 +89,11 @@ export class MnemonicosisComponent implements OnInit {
       );
 
     this.stack$ = this.stacksService.selectSelectedStack()
-      .pipe(tap((stack: Stack) => {
+      .pipe(
+        tap((stack: Stack) => {
+          if (stack.isCyclical) {
+            this.router.navigate(['/home'], {queryParamsHandling: "merge"})
+          }
           this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
         })
       );

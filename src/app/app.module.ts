@@ -34,6 +34,8 @@ import { SpreadComponent } from './components/spread/spread.component';
 import { SpreadDialogComponent } from './components/spread-dialog/spread-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { AccanComponent } from './components/accan/accan.component';
+import { TrainerComponent } from './components/trainer/trainer.component';
+import { CyclicalTrainerComponent } from './components/cyclical-trainer/cyclical-trainer.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { AccanComponent } from './components/accan/accan.component';
     CardValueComponent,
     SpreadComponent,
     SpreadDialogComponent,
-    AccanComponent
+    AccanComponent,
+    TrainerComponent,
+    CyclicalTrainerComponent
   ],
   imports: [
     CommonModule,

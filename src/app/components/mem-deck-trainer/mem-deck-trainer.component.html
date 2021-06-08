@@ -1,5 +1,4 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div *ngIf="stack$ | async as stack; else selectStack"
+  <div *ngIf="stack"
        fxFlex="95%">
     <mat-card>
       <mat-card-content fxLayout="row" fxLayoutAlign="center none">
@@ -152,11 +151,3 @@
       </mat-slide-toggle>
     </div>
   </div>
-
-  <ng-template #selectStack>
-    <div fxLayoutAlign="center center">
-      <p>Select Stack from menu.</p>
-    </div>
-  </ng-template>
-</div>
-

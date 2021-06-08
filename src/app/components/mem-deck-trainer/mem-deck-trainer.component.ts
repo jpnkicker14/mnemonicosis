@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Stack} from '../../services/stacks/stack';
-import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {DeckStateEnum} from './deck-state.enum';
 import {Card} from '../../services/stacks/card';
@@ -8,8 +7,6 @@ import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import {CardDisplayEnum} from './card-display.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ErrorStateMatcher} from '@angular/material/core';
-import {filter, map, tap} from 'rxjs/operators';
-import {Observable, OperatorFunction} from 'rxjs';
 
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -42,7 +39,10 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     ])
   ]
 })
-export class MemDeckTrainerComponent implements OnInit {
+export class MemDeckTrainerComponent implements OnChanges {
+  @Input() stack?: Stack;
+
+
   boundStack: Array<Card>;
   deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum };
   focus: number;
@@ -51,14 +51,12 @@ export class MemDeckTrainerComponent implements OnInit {
   errorMatcher: CrossFieldErrorMatcher
   disableAnimation: boolean;
 
-  stack$: Observable<Stack>;
-
   @ViewChild('form') form?: NgForm;
 
   DeckStateEnum = DeckStateEnum;
   CardDisplayEnum = CardDisplayEnum;
 
-  constructor(private stacksService: StacksService) {
+  constructor() {
     this.errorMatcher = new CrossFieldErrorMatcher();
     this.boundStack = [];
     this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
@@ -66,15 +64,14 @@ export class MemDeckTrainerComponent implements OnInit {
     this.focus = 0;
     this.showImage = true;
     this.disableAnimation = false;
-
-    this.stack$ = this.stacksService.selectSelectedStack()
-      .pipe(tap((stack: Stack) => {
-        this.boundStack = stack.cards;
-      }))
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes?.stack?.currentValue != null) {
+      this.boundStack = changes.stack.currentValue.cards;
+    }
   }
+
 
   update(stack: Stack, deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum }) {
     this.form?.resetForm(deckParams);

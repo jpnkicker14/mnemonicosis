@@ -5,6 +5,8 @@ import {StacksService} from '../../services/stacks/stacks.service';
 import {Card} from '../../services/stacks/card';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Router} from '@angular/router';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-accan',
@@ -39,8 +41,16 @@ export class AccanComponent implements OnInit {
   diff: number;
   cutCard: Card;
 
-  constructor(private stacksService: StacksService) {
-    this.stack$ = this.stacksService.selectSelectedStack();
+  constructor(private router: Router,
+              private stacksService: StacksService) {
+    this.stack$ = this.stacksService.selectSelectedStack()
+      .pipe(
+        tap((stack: Stack) => {
+          if(stack.isCyclical) {
+            this.router.navigate(['/home'], { queryParamsHandling: "merge" })
+          }
+        })
+      );
     this.state = 'default';
     this.disableAnimation = false;
     this.card = this.stacksService.getSelectedStack().cards[0];

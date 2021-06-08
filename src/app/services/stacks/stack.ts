@@ -1,5 +1,6 @@
 import {Card} from './card';
 import {StackGroup} from './enums/stack-group.enum';
+import {CardDef} from './card-def';
 
 export class Stack {
   id: string;
@@ -7,11 +8,11 @@ export class Stack {
   group: StackGroup;
   cards: Array<Card>;
 
-  constructor(id: string, name: string, group: StackGroup, cards: Array<Card>) {
+  constructor(id: string, name: string, group: StackGroup, cards: Array<CardDef>) {
     this.id = id;
     this.name = name;
     this.group = group;
-    this.cards = cards;
+    this.cards = cards.map((card: CardDef, index: number) => new Card(card.value, card.suit, index, card.naturals));
   }
 
   get isCyclical(): boolean {

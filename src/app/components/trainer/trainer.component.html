@@ -1,0 +1,17 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+  <div *ngIf="stack$ | async as stack; else selectStack"
+       fxFlex="95%">
+    <app-mem-deck-trainer *ngIf="!stack.isCyclical"
+                          [stack]="stack"></app-mem-deck-trainer>
+
+    <app-cyclical-trainer *ngIf="stack.isCyclical"
+                          [stack]="stack"></app-cyclical-trainer>
+  </div>
+
+  <ng-template #selectStack>
+    <div fxLayoutAlign="center center">
+      <p>Select Stack from menu.</p>
+    </div>
+  </ng-template>
+</div>
+
