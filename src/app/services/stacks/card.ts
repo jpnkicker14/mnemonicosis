@@ -5,7 +5,7 @@ import {NaturalEnum} from './enums/natural.enum';
 export class Card {
   value: CardValue
   suit: Suit
-  position?: number;
+  position: number;
   naturals: Array<NaturalEnum>
   id: string;
 
@@ -13,12 +13,12 @@ export class Card {
     this.id = value + suit;
     this.value = value;
     this.suit = suit;
-    this.position = position;
+    this.position = position ?? 0;
     this.naturals = naturals ?? [];
   }
 
-  get bottomPosition(): number | null {
-    return this.position ? (53 - this.position) : null;
+  get bottomPosition(): number {
+    return 53 - this.position;
   }
 
   get isNatural(): boolean {

@@ -4,7 +4,48 @@
     <mat-card>
       <mat-card-title>{{stack.name}}</mat-card-title>
       <mat-card-content>
-        <app-spread [cards]="stack.cards"></app-spread>
+        <div class="locate" fxLayout="row" fxLayoutAlign="space-around center">
+          <h1 class="mat-h2">Locate: </h1>
+
+          <mat-form-field appearance="fill"
+                          mat-list-item>
+            <mat-label>Value</mat-label>
+            <mat-select [ngModel]="valueId"
+                        (ngModelChange)="valueChangeHandler(stack.cards, $event)"
+                        [ngModelOptions]="{standalone: true}">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let value of values" [value]="value.id">
+                {{value.name | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill"
+                          mat-list-item>
+            <mat-label>Suit</mat-label>
+            <mat-select [ngModel]="suitId"
+                        (ngModelChange)="suitChangeHandler(stack.cards, $event)"
+                        [ngModelOptions]="{standalone: true}">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let suit of suites" [value]="suit.id">
+                {{suit.name | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-raised-button
+                  class="mat-accent"
+                  (click)="clear()">
+            Clear
+          </button>
+        </div>
+
+        <div *ngIf="positions.length > 0"
+          fxLayoutAlign="center">
+          <p class="mat-title">Position<span *ngIf="positions.length > 1">s</span>: {{positions}}</p>
+        </div>
+
+        <app-spread [cards]="stack.cards" [selectedCardIds]="selectedCardIds"></app-spread>
       </mat-card-content>
     </mat-card>
   </div>

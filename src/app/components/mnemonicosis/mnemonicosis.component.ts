@@ -128,7 +128,7 @@ export class MnemonicosisComponent implements OnInit {
     this.dialog.open(SpreadDialogComponent, {
       data: {
         cards: stack.cards,
-        selectedCardId: selectedCard.id
+        selectedCardIds: [selectedCard.id]
       },
       width: this.isLtSm ? '100%' : '60%'
     });
@@ -137,8 +137,8 @@ export class MnemonicosisComponent implements OnInit {
   cutCards(stack: Stack, selectedCard: Card, min: number, max: number): void {
     const cards = this.faceDown ? stack.cards : stack.faceUpCards;
     this.cutCard = cards[(Utils.getRand(min, max) - 1)];
-    this.cutCardDifference = Math.abs(((this.faceDown ? selectedCard?.position : selectedCard?.bottomPosition) ?? 0) -
-      ((this.faceDown ? this.cutCard?.position : this.cutCard?.bottomPosition) ?? 0));
+    this.cutCardDifference = Math.abs((this.faceDown ? selectedCard.position : selectedCard.bottomPosition) -
+      (this.faceDown ? this.cutCard.position : this.cutCard.bottomPosition));
   }
 
   psychForceHandler(selectedCard: Card, cutCard?: Card | null) {

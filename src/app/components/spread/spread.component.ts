@@ -7,7 +7,7 @@ import {Card} from '../../services/stacks/card';
   styleUrls: ['./spread.component.sass']
 })
 export class SpreadComponent implements OnInit {
-  @Input() selectedCardId?: string;
+  @Input() selectedCardIds: Array<string> = [];
   @Input() cards: Array<Card>;
 
   constructor() {
@@ -17,4 +17,7 @@ export class SpreadComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  containsId(id: string): boolean {
+    return this.selectedCardIds.includes(id);
+  }
 }

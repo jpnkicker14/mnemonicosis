@@ -34,15 +34,20 @@ export class AccanComponent implements OnInit {
   state: "default" | "flipped"
   disableAnimation: boolean;
 
-  card?: Card;
-  number?: number;
-  diff?: number;
-  cutCard?: Card;
+  card: Card;
+  number: number;
+  diff: number;
+  cutCard: Card;
 
   constructor(private stacksService: StacksService) {
     this.stack$ = this.stacksService.selectSelectedStack();
     this.state = 'default';
     this.disableAnimation = false;
+    this.card = this.stacksService.getSelectedStack().cards[0];
+    this.number = 1;
+    this.diff = 0
+    this.cutCard = this.card;
+
     this.newAcaanHandler(this.stacksService.getSelectedStack());
   }
 
@@ -58,8 +63,7 @@ export class AccanComponent implements OnInit {
     this.state = 'default';
     this.card = stack.cards[Utils.getRand(1, 52)];
     this.number = Utils.getRand(1, 52);
-    const cardPosition = this.card.position ?? 0;
-    let diff = cardPosition - this.number;
+    let diff = this.card.position - this.number;
     if (diff < 0) {
       diff += 52
     }
