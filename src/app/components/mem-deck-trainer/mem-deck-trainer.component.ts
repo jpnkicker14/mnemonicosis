@@ -58,8 +58,7 @@ export class MemDeckTrainerComponent implements OnInit {
   DeckStateEnum = DeckStateEnum;
   CardDisplayEnum = CardDisplayEnum;
 
-  constructor(private route: ActivatedRoute,
-              private stacksService: StacksService) {
+  constructor(private stacksService: StacksService) {
     this.errorMatcher = new CrossFieldErrorMatcher();
     this.boundStack = [];
     this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
@@ -68,14 +67,10 @@ export class MemDeckTrainerComponent implements OnInit {
     this.showImage = true;
     this.disableAnimation = false;
 
-    this.stack$ = this.route.queryParams
-      .pipe(
-        map((param: Params) => this.stacksService.getStack(param?.id)),
-        filter((stack: Stack | undefined) => stack != null) as OperatorFunction<Stack | undefined, Stack>,
-        tap((stack: Stack) => {
-          this.boundStack = stack.cards;
-        })
-      )
+    this.stack$ = this.stacksService.selectSelectedStack()
+      .pipe(tap((stack: Stack) => {
+        this.boundStack = stack.cards;
+      }))
   }
 
   ngOnInit(): void {

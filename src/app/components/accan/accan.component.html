@@ -1,0 +1,59 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+  <div *ngIf="(stack$ | async) as stack; else selectStack"
+       fxFlex="95%" fxLayout="column" fxLayoutAlign="space-around center">
+    <h1 class="mat-headline">ACCAN</h1>
+
+    <div class="card-display"
+         fxLayout="row" fxLayoutAlign="space-around center">
+
+      <div class="card"
+           (click)="cardClicked()"
+           [@cardFlip]="state"
+           [@.disabled]="disableAnimation"
+           fxLayout="column">
+
+        <div class="face back" fxLayout="column" fxLayoutAlign="center center">
+          <h1 class="mat-display-1 text-center">
+            The
+            <app-card-value [card]="card" [cardClass]="'mat-display-1'"></app-card-value>
+            needs to be the {{displayNumber}} card.
+          </h1>
+
+        </div>
+
+        <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+          <p class="mat-display-1 text-center"> The
+            <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
+            needs to be the {{displayNumber}} card.
+          </p>
+          <div *ngIf="card.position - number === 0; else showMath">
+            <p class="mat-headline text-center">Done!</p>
+          </div>
+          <ng-template #showMath>
+            <p class="mat-headline text-center">
+              {{card.position}} - {{number}} = {{card.position - number}}<br>
+              <span *ngIf="card.position - number < 0">52 {{card.position - number}} = {{52 + card.position - number}}</span>
+            </p>
+
+            <p class="mat-headline text-center">Cut the <app-card-value [card]="cutCard" [cardClass]="'body-1'"></app-card-value> ({{cutCard.position}}) to the bottom</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="fab-container">
+      <button mat-fab color="primary"
+              aria-label="new card"
+              (click)="newAcaanHandler(stack)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <ng-template #selectStack>
+    <div fxLayoutAlign="center center">
+      <p>Select Stack from menu.</p>
+    </div>
+  </ng-template>
+</div>
+

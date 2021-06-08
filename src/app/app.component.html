@@ -7,7 +7,7 @@
       <mat-icon>menu</mat-icon>
     </button>
 
-    <span>{{selectedStack?.name || 'Select Stack'}}</span>
+    <span>{{(selectedStack$ | async)?.name || 'Select Stack'}}</span>
 
     <span class="spacer"></span>
 
@@ -22,7 +22,7 @@
         <mat-form-field appearance="fill"
                         mat-list-item>
           <mat-label>Stack</mat-label>
-          <mat-select [ngModel]="selectedStackId"
+          <mat-select [ngModel]="(selectedStack$ | async)?.id"
                       (ngModelChange)="stackChangeHandler($event)"
                       [ngModelOptions]="{standalone: true}">
             <mat-optgroup *ngFor="let group of groupedStacks" [label]="group.name">
@@ -36,7 +36,7 @@
         <a mat-list-item
            routerLinkActive="active"
            routerLink="/home"
-           [queryParams]="{id: selectedStackId}"
+           [queryParams]="{id: (selectedStack$ | async)?.id}"
         >
           Home
         </a>
@@ -44,7 +44,7 @@
         <a mat-list-item
            routerLinkActive="active"
            routerLink="/trainer"
-           [queryParams]="{id: selectedStackId}"
+           [queryParams]="{id: (selectedStack$ | async)?.id}"
         >
           Trainer
         </a>
@@ -52,9 +52,17 @@
         <a mat-list-item
            routerLinkActive="active"
            routerLink="/mnemonicosis"
-           [queryParams]="{id: selectedStackId}"
+           [queryParams]="{id: (selectedStack$ | async)?.id}"
         >
           Mnemonicosis
+        </a>
+
+        <a mat-list-item
+           routerLinkActive="active"
+           routerLink="/accan"
+           [queryParams]="{id: (selectedStack$ | async)?.id}"
+        >
+          ACCAN
         </a>
 
       </mat-nav-list>

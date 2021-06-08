@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Stack} from '../../services/stacks/stack';
 import {ActivatedRoute, Params} from '@angular/router';
 import {StacksService} from '../../services/stacks/stacks.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -9,19 +10,13 @@ import {StacksService} from '../../services/stacks/stacks.service';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  stack: Stack | null;
+  stack$: Observable<Stack>;
 
-  constructor(private route: ActivatedRoute,
-              private stacksService: StacksService) {
-    this.stack = null;
-
+  constructor(private stacksService: StacksService) {
+    this.stack$ = this.stacksService.selectSelectedStack()
   }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe((param: Params) => {
-        this.stack = <Stack>this.stacksService.getStack(param?.id);
-      })
   }
 
 }

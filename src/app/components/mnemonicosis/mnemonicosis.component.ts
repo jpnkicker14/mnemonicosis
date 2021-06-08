@@ -44,6 +44,7 @@ interface NewCardInfo {
 })
 export class MnemonicosisComponent implements OnInit {
   state: "default" | "flipped"
+  disableAnimation: boolean;
   showImage: boolean;
   isLtSm: boolean;
   cutCard: Card | null;
@@ -56,12 +57,12 @@ export class MnemonicosisComponent implements OnInit {
   stack$: Observable<Stack>;
   cardInfo$: Observable<NewCardInfo>
 
-  constructor(private route: ActivatedRoute,
-              private dialog: MatDialog,
+  constructor(private dialog: MatDialog,
               private breakpointObserver: BreakpointObserver,
               private stacksService: StacksService,
               private nameService: NameService) {
     this.state = 'default';
+    this.disableAnimation = false;
     this.showImage = false;
     this.isLtSm = false;
     this.cutCard = null;
@@ -86,14 +87,11 @@ export class MnemonicosisComponent implements OnInit {
         })
       );
 
-    this.stack$ = this.route.queryParams
-      .pipe(
-        map((param: Params) => this.stacksService.getStack(param?.id)),
-        filter((stack: Stack | undefined) => stack != null) as OperatorFunction<Stack | undefined, Stack>,
-        tap((stack: Stack) => {
+    this.stack$ = this.stacksService.selectSelectedStack()
+      .pipe(tap((stack: Stack) => {
           this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
         })
-      )
+      );
   }
 
   ngOnInit(): void {
@@ -118,8 +116,12 @@ export class MnemonicosisComponent implements OnInit {
 
   newCardHandler(stack: Stack): void {
     this.state = 'default';
+    this.disableAnimation = true;
     this.reset();
-    this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)])
+    this.newCardSub.next(stack.cards[Utils.getRand(0, stack.cards.length - 1)]);
+    setTimeout(() => {
+      this.disableAnimation = false;
+    });
   }
 
   openSpreadHandler(stack: Stack, selectedCard: Card) {

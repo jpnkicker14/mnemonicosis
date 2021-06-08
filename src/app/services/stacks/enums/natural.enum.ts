@@ -1,3 +1,4 @@
 export enum NaturalEnum {
-  speller='Speller'
+  speller='Speller',
+  bottomSpeller='Bottom Speller'
 }

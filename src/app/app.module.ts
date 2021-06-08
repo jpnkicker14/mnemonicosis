@@ -33,6 +33,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { SpreadComponent } from './components/spread/spread.component';
 import { SpreadDialogComponent } from './components/spread-dialog/spread-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { AccanComponent } from './components/accan/accan.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     HomeComponent,
     CardValueComponent,
     SpreadComponent,
-    SpreadDialogComponent
+    SpreadDialogComponent,
+    AccanComponent
   ],
   imports: [
     CommonModule,

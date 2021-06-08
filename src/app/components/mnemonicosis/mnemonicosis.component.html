@@ -78,6 +78,7 @@
                  *ngIf="cardInfo?.card as card"
                  (click)="cardClicked()"
                  [@cardFlip]="state"
+                 [@.disabled]="disableAnimation"
                  fxLayout="column">
 
               <div class="face back" fxLayout="column" fxLayoutAlign="center center">

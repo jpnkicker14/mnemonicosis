@@ -5,7 +5,6 @@ import {Suit} from '../enums/suit.enum';
 import {StackGroup} from '../enums/stack-group.enum';
 import {NaturalEnum} from '../enums/natural.enum';
 
-// todo natural (maybe not here)
 export const aronson = new Stack(
   'aronson',
   'Aronson',
@@ -50,8 +49,8 @@ export const aronson = new Stack(
     new Card(CardValue.four, Suit.spades, 37),
     new Card(CardValue.ten, Suit.hearts, 38),
     new Card(CardValue.six, Suit.hearts, 39),
-    new Card(CardValue.three, Suit.clubs, 40),
-    new Card(CardValue.two, Suit.spades, 41),
+    new Card(CardValue.three, Suit.clubs, 40, [NaturalEnum.bottomSpeller]),
+    new Card(CardValue.two, Suit.spades, 41, [NaturalEnum.bottomSpeller]),
     new Card(CardValue.nine, Suit.hearts, 42),
     new Card(CardValue.king, Suit.spades, 43),
     new Card(CardValue.six, Suit.spades, 44),

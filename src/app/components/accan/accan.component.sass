@@ -1,0 +1,48 @@
+.container
+  margin-top: 12px
+
+mat-card
+  margin-top: 16px
+
+mat-card-title
+  text-align: center
+
+.fab-container
+  position: fixed
+  bottom: 15px
+  right: 15px
+  z-index: 100
+  display: flex
+  flex-direction: column-reverse
+  align-items: center
+
+.card
+  box-shadow: 10px 10px 43px -18px rgba(0, 0, 0, 0.75)
+  border-radius: 5px
+  min-height: 525px
+  height: 100%
+  width: 350px
+  cursor: pointer
+  position: relative
+  transform-style: preserve-3d
+
+.face
+  padding: 12px
+  display: block
+  position: absolute
+  width: 100%
+  height: 100%
+  border-radius: inherit
+  backface-visibility: hidden
+
+  > img
+    width: 100%
+    height: 100%
+    object-fit: scale-down
+    border-radius: inherit
+
+.front
+  transform: rotateY(180deg)
+
+.text-center
+  text-align: center
