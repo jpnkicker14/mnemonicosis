@@ -12,7 +12,7 @@ export class Stack {
     this.id = id;
     this.name = name;
     this.group = group;
-    this.cards = cards.map((card: CardDef, index: number) => new Card(card.value, card.suit, index, card.naturals));
+    this.cards = cards.map((card: CardDef, index: number) => new Card(card.value, card.suit, index + 1, card.naturals));
   }
 
   get isCyclical(): boolean {
