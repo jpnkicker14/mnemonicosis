@@ -41,12 +41,13 @@
           Home
         </a>
 
+        <div mat-subheader>Trainers</div>
         <a mat-list-item
            routerLinkActive="active"
            routerLink="/trainer"
            [queryParams]="{id: (selectedStack$ | async)?.id}"
         >
-          Trainer
+          Stack Trainer
         </a>
 
         <a mat-list-item
@@ -67,6 +68,8 @@
           ACCAN
         </a>
 
+        <div mat-subheader>Games</div>
+        <div mat-line>Coming Soon</div>
       </mat-nav-list>
 
     </mat-sidenav>
