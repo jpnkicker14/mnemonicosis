@@ -1,14 +1,8 @@
-form
-  width: 100%
-
-mat-card
-  margin-top: 16px
-  margin-bottom: 16px
-
 .container
   height: 100%
 
 .card-display
+  margin-top: 16px
   margin-bottom: 16px
 
 .card
@@ -20,6 +14,13 @@ mat-card
   cursor: pointer
   position: relative
   transform-style: preserve-3d
+  overflow: visible
+
+.play-icon
+  height: 48px !important
+  width: 48px !important
+  font-size: 48px !important
+
 
 .face
   display: block
@@ -35,5 +36,9 @@ mat-card
     object-fit: scale-down
     border-radius: inherit
 
+  > button
+    backface-visibility: hidden
+
 .front
   transform: rotateY(180deg)
+

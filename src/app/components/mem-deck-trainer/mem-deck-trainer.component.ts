@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Stack} from '../../services/stacks/stack';
 import {StacksService} from '../../services/stacks/stacks.service';
 import {DeckStateEnum} from './deck-state.enum';
@@ -7,14 +7,12 @@ import {FormControl, FormGroupDirective, NgForm} from '@angular/forms';
 import {CardDisplayEnum} from './card-display.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ErrorStateMatcher} from '@angular/material/core';
-
-/** Error when the parent is invalid */
-class CrossFieldErrorMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    return !!(control?.dirty && form?.invalid);
-  }
-}
-
+import {Suit} from '../../services/stacks/enums/suit.enum';
+import {CardValue} from '../../services/stacks/enums/card-value.enum';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {debounce, debounceTime, filter} from 'rxjs/operators';
+import {DeckFilters} from '../../services/stacks/deck-filters';
+import {CardDisplayDetails} from '../../services/stacks/enums/card-display-details.enum';
 
 @Component({
   selector: 'app-mem-deck-trainer',
@@ -39,45 +37,52 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     ])
   ]
 })
-export class MemDeckTrainerComponent implements OnChanges {
+export class MemDeckTrainerComponent implements OnInit, OnChanges {
   @Input() stack?: Stack;
 
-
   boundStack: Array<Card>;
-  deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum };
+  deckParams: DeckFilters
   focus: number;
   state: "default" | "flipped"
   showImage: boolean;
-  errorMatcher: CrossFieldErrorMatcher
   disableAnimation: boolean;
 
-  @ViewChild('form') form?: NgForm;
+  speech: SpeechSynthesisUtterance;
 
-  DeckStateEnum = DeckStateEnum;
-  CardDisplayEnum = CardDisplayEnum;
+  CardDisplayDetails = CardDisplayDetails;
 
   constructor() {
-    this.errorMatcher = new CrossFieldErrorMatcher();
     this.boundStack = [];
-    this.deckParams = {start: 1, end: 52, shuffle: DeckStateEnum.loop, display: CardDisplayEnum.card};
+    this.deckParams = new DeckFilters();
     this.state = 'default';
     this.focus = 0;
     this.showImage = true;
     this.disableAnimation = false;
+
+    this.speech = new SpeechSynthesisUtterance();
+  }
+
+  ngOnInit() {
+    if ('speechSynthesis' in window) {
+      this.speech = new SpeechSynthesisUtterance();
+      this.speech.lang = 'en';
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes?.stack?.currentValue != null) {
+    if (changes?.stack?.currentValue != null) {
       this.boundStack = changes.stack.currentValue.cards;
     }
   }
 
 
-  update(stack: Stack, deckParams: { start: number, end: number, shuffle: DeckStateEnum, display: CardDisplayEnum }) {
-    this.form?.resetForm(deckParams);
-    const boundStack = stack?.cards.slice(deckParams.start - 1, deckParams.end) ?? [];
-    this.boundStack = (deckParams.shuffle === DeckStateEnum.shuffle) ? this.shuffle(boundStack) : boundStack;
+  update(stack: Stack, deckParams: DeckFilters) {
+    this.boundStack = Stack.filterCards(this.stack?.cards, deckParams);
     this.state = (deckParams.display === CardDisplayEnum.card) ? 'default' : 'flipped';
+    if(deckParams.voice) {
+      this.speech.voice = window.speechSynthesis.getVoices()
+        .filter((voice: SpeechSynthesisVoice) => voice.voiceURI === deckParams.voice)[0];
+    }
     this.focus = 0;
   }
 
@@ -115,21 +120,8 @@ export class MemDeckTrainerComponent implements OnChanges {
     });
   }
 
-  private shuffle(cards: Array<Card>): Array<Card> {
-    let currentIndex = cards.length, randomIndex;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [cards[currentIndex], cards[randomIndex]] = [
-        cards[randomIndex], cards[currentIndex]];
-    }
-
-    return cards;
+  playSound(): void {
+    this.speech.text = `${this.boundStack[this.focus].wordValue} of ${this.boundStack[this.focus].suit}`;
+    window.speechSynthesis.speak(this.speech);
   }
 }

@@ -1,153 +1,56 @@
-  <div *ngIf="stack"
-       fxFlex="95%">
-    <mat-card>
-      <mat-card-content fxLayout="row" fxLayoutAlign="center none">
-        <form
-          #form="ngForm"
-          appTrainerValidator
-          (ngSubmit)="update(stack, deckParams)"
-          fxLayout="row"
-          fxLayout.lt-sm="column"
-          fxLayoutAlign="space-between center"
-          fxLayoutAlign.lt-sm="space-between"
-          fxLayoutGap.lt-sm="8px">
+<div *ngIf="stack"
+     fxFlex="95%">
+    <app-deck-filters-form
+      [deckFilters]="deckParams"
+      (deckFilterChanged)="update(this.stack, $event)">
+    </app-deck-filters-form>
 
-          <mat-form-field
-            appearance="standard"
-            fxFlex.lt-sm="100">
-            <mat-label>Start</mat-label>
-            <input matInput
-                   placeholder="1"
-                   required
-                   type="number"
-                   name="start"
-                   [(ngModel)]="deckParams.start"
-                   [errorStateMatcher]="errorMatcher"
-                   appCardMinValidator
-                   appCardMaxValidator
-            />
-            <mat-error *ngIf="form.controls['start']?.hasError('required')">
-              Please enter Start limit
-            </mat-error>
-            <mat-error *ngIf="form.controls['start']?.hasError('max')">
-              {{form.controls['start'].errors?.max}}
-            </mat-error>
-            <mat-error *ngIf="form.controls['start']?.hasError('min')">
-              {{form.controls['start'].errors?.min}}
-            </mat-error>
-            <mat-error *ngIf="form.hasError('illogical')">
-              Cannot have Start larger than End
-            </mat-error>
-          </mat-form-field>
+  <div class="card-display"
+       fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-icon-button
+            aria-label="previous"
+            (click)="leftClickHandler()">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
 
-          <mat-form-field
-            appearance="standard">
-            <mat-label>End</mat-label>
-            <input matInput
-                   placeholder="52"
-                   required
-                   type="number"
-                   name="end"
-                   [(ngModel)]="deckParams.end"
-                   [errorStateMatcher]="errorMatcher"
-                   appCardMaxValidator
-                   appCardMinValidator/>
-            <mat-error *ngIf="form.controls['end']?.hasError('required')">
-              Please enter End limit
-            </mat-error>
-            <mat-error *ngIf="form.controls['end']?.hasError('max')">
-              {{form.controls['end'].errors?.max}}
-            </mat-error>
-            <mat-error *ngIf="form.controls['end']?.hasError('min')">
-              {{form.controls['min'].errors?.min}}
-            </mat-error>
-            <mat-error *ngIf="form.hasError('illogical')">
-              Cannot have Start larger than End
-            </mat-error>
-          </mat-form-field>
+    <div class="card"
+         (click)="cardClicked()"
+         [@.disabled]="disableAnimation"
+         [@cardFlip]="state"
+         fxLayout="column">
 
-          <div fxFlex="33%" fxLayout="row" fxLayoutAlign="space-between center">
-            <mat-button-toggle-group
-              name="shuffle"
-              [(ngModel)]="deckParams.shuffle"
-              aria-label="Shuffle state">
-              <mat-button-toggle [value]="DeckStateEnum.shuffle" aria-label="Shuffle">
-                <mat-icon>shuffle</mat-icon>
-              </mat-button-toggle>
-              <mat-button-toggle [value]="DeckStateEnum.loop" aria-label="Loop">
-                <mat-icon>loop</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+      <div class="face back" fxLayoutAlign="center center">
+        <ng-container [ngSwitch]="deckParams.displayDetails">
+          <img *ngSwitchCase="CardDisplayDetails.image"
+               [src]="boundStack[focus].imageUrl"/>
 
-            <mat-button-toggle-group
-              name="display"
-              [(ngModel)]="deckParams.display"
-              aria-label="Shuffle state">
-              <mat-button-toggle [value]="CardDisplayEnum.card" aria-label="card">
-                <mat-icon>text_format</mat-icon>
-              </mat-button-toggle>
-              <mat-button-toggle [value]="CardDisplayEnum.number" aria-label="number">
-                <mat-icon>format_list_numbered</mat-icon>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+          <app-card-value *ngSwitchCase="CardDisplayDetails.text" [card]="boundStack[focus]"></app-card-value>
+
+          <div *ngSwitchCase="CardDisplayDetails.sound" class="sound">
+            <button mat-icon-button *ngIf="state === 'default'"
+                    aria-label="Example icon-button with a heart icon"
+                    (click)="$event.stopPropagation(); playSound()">
+              <mat-icon class="play-icon">volume_up</mat-icon>
+            </button>
           </div>
-
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid || form.pristine">Update
-          </button>
-        </form>
-      </mat-card-content>
-    </mat-card>
-
-    <div class="card-display"
-         fxLayout="row" fxLayoutAlign="space-around center">
-      <button mat-icon-button
-              aria-label="previous"
-              (click)="leftClickHandler()">
-        <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-
-      <div class="card"
-           (click)="cardClicked()"
-           [@.disabled]="disableAnimation"
-           [@cardFlip]="state"
-           fxLayout="column">
-
-        <div class="face back" fxLayoutAlign="center center">
-          <img *ngIf="showImage; else textCard"
-               [src]="'assets/imgs/cards/' + boundStack[focus].wordValue + '_' + boundStack[focus].suit + '.jpg'"/>
-
-          <ng-template #textCard>
-            <app-card-value [card]="boundStack[focus]"></app-card-value>
-          </ng-template>
-
-        </div>
-
-        <div class="face front" fxLayout="column" fxLayoutAlign="center center">
-          <p class="mat-headline">Position: <b>{{boundStack[focus].position}}</b></p>
-          <p *ngIf="boundStack[focus].isNatural" class="mat-title">Natural:
-            <em>{{boundStack[focus].naturals.toString()}}</em>
-          </p>
-          <p class="mat-subheading-1">From Bottom: <em>{{boundStack[focus].bottomPosition}}</em></p>
-        </div>
+        </ng-container>
       </div>
 
-
-      <button mat-icon-button
-              aria-label="next"
-              (click)="rightClickHandler()">
-        <mat-icon>arrow_forward_ios</mat-icon>
-      </button>
+      <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+        <p class="mat-headline">Position: <b>{{boundStack[focus].position}}</b></p>
+        <p *ngIf="boundStack[focus].isNatural" class="mat-title">Natural:
+          <em>{{boundStack[focus].naturals.toString()}}</em>
+        </p>
+        <p class="mat-subheading-1">From Bottom: <em>{{boundStack[focus].bottomPosition}}</em></p>
+      </div>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center none">
-      <mat-slide-toggle
-        [(ngModel)]="showImage"
-        [ngModelOptions]="{standalone: true}"
-      name="image">Show Card
-      </mat-slide-toggle>
-    </div>
+
+    <button mat-icon-button
+            aria-label="next"
+            (click)="rightClickHandler()">
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
   </div>
+
+</div>

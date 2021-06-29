@@ -10,7 +10,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
-import {CommonModule} from '@angular/common';
+import {CommonModule, TitleCasePipe} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
@@ -26,16 +26,19 @@ import {CardMinValidatorDirective} from './directives/card-min-validator/card-mi
 import {CardMaxValidatorDirective} from './directives/card-max-validator/card-max-validator.directive';
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { TrainerValidatorDirective } from './directives/trainer-validator/trainer-validator.directive';
-import { HomeComponent } from './components/home/home.component';
-import { CardValueComponent } from './components/card-value/card-value.component';
+import {TrainerValidatorDirective} from './directives/trainer-validator/trainer-validator.directive';
+import {HomeComponent} from './components/home/home.component';
+import {CardValueComponent} from './components/card-value/card-value.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { SpreadComponent } from './components/spread/spread.component';
-import { SpreadDialogComponent } from './components/spread-dialog/spread-dialog.component';
+import {SpreadComponent} from './components/spread/spread.component';
+import {SpreadDialogComponent} from './components/spread-dialog/spread-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { AccanComponent } from './components/accan/accan.component';
-import { TrainerComponent } from './components/trainer/trainer.component';
-import { CyclicalTrainerComponent } from './components/cyclical-trainer/cyclical-trainer.component';
+import {AccanComponent} from './components/accan/accan.component';
+import {TrainerComponent} from './components/trainer/trainer.component';
+import {CyclicalTrainerComponent} from './components/cyclical-trainer/cyclical-trainer.component';
+import {DeckFiltersFormComponent} from './components/deck-filters-form/deck-filters-form.component';
+import {SuitsPipe} from './pipes/suits/suits.pipe';
+import { CardValuesPipe } from './pipes/card-values/card-values.pipe';
 
 @NgModule({
   declarations: [
@@ -51,39 +54,42 @@ import { CyclicalTrainerComponent } from './components/cyclical-trainer/cyclical
     SpreadDialogComponent,
     AccanComponent,
     TrainerComponent,
-    CyclicalTrainerComponent
+    CyclicalTrainerComponent,
+    DeckFiltersFormComponent,
+    SuitsPipe,
+    CardValuesPipe
   ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    FlexLayoutModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatSlideToggleModule,
-    MatDialogModule,
-    MatExpansionModule
-  ],
-  providers: [],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        }),
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FlexLayoutModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatSidenavModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatDialogModule,
+        MatExpansionModule
+    ],
+  providers: [TitleCasePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {
