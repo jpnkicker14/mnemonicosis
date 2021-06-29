@@ -16,7 +16,8 @@
   <mat-sidenav-container class="navbar-sidenav-container">
     <!-- Side nav -->
     <mat-sidenav #snav [opened]="!mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav">
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav"
+                 (click)="mobileQuery.matches ? snav.toggle() : null">
 
       <mat-nav-list>
         <mat-form-field appearance="fill"

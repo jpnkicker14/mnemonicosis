@@ -120,8 +120,9 @@
     <div fxLayout="row"
          fxLayout.lt-sm="column"
          fxLayoutAlign="space-between center"
-         fxLayoutAlign.lt-sm="space-between">
+         fxLayoutAlign.lt-sm="space-between center">
       <mat-button-toggle-group
+        class="spacer"
         name="shuffle"
         [(ngModel)]="deckFilters.shuffle"
         aria-label="Shuffle state">
@@ -135,6 +136,7 @@
 
       <mat-button-toggle-group
         name="display"
+        class="spacer"
         [(ngModel)]="deckFilters.display"
         aria-label="Shuffle state">
         <mat-button-toggle [value]="CardDisplayEnum.card" aria-label="card">
