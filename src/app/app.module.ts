@@ -18,7 +18,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MemDeckTrainerComponent} from './components/mem-deck-trainer/mem-deck-trainer.component';
-import {MnemonicosisComponent} from './components/mnemonicosis/mnemonicosis.component';
+import {MnemonicosisComponent} from './pages/mnemonicosis/mnemonicosis.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -27,18 +27,19 @@ import {CardMaxValidatorDirective} from './directives/card-max-validator/card-ma
 import {MatCardModule} from '@angular/material/card';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {TrainerValidatorDirective} from './directives/trainer-validator/trainer-validator.directive';
-import {HomeComponent} from './components/home/home.component';
+import {HomeComponent} from './pages/home/home.component';
 import {CardValueComponent} from './components/card-value/card-value.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {SpreadComponent} from './components/spread/spread.component';
 import {SpreadDialogComponent} from './components/spread-dialog/spread-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {AccanComponent} from './components/accan/accan.component';
-import {TrainerComponent} from './components/trainer/trainer.component';
+import {AccanComponent} from './pages/accan/accan.component';
+import {TrainerComponent} from './pages/trainer/trainer.component';
 import {CyclicalTrainerComponent} from './components/cyclical-trainer/cyclical-trainer.component';
 import {DeckFiltersFormComponent} from './components/deck-filters-form/deck-filters-form.component';
 import {SuitsPipe} from './pipes/suits/suits.pipe';
 import { CardValuesPipe } from './pipes/card-values/card-values.pipe';
+import { MissingCardsComponent } from './pages/missing-cards/missing-cards.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { CardValuesPipe } from './pipes/card-values/card-values.pipe';
     CyclicalTrainerComponent,
     DeckFiltersFormComponent,
     SuitsPipe,
-    CardValuesPipe
+    CardValuesPipe,
+    MissingCardsComponent
   ],
     imports: [
         CommonModule,

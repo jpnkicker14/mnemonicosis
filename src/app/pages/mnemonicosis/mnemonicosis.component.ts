@@ -9,7 +9,7 @@ import {filter, map, switchMap, tap} from 'rxjs/operators';
 import {Utils} from '../../utils/utils';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
-import {SpreadDialogComponent} from '../spread-dialog/spread-dialog.component';
+import {SpreadDialogComponent} from '../../components/spread-dialog/spread-dialog.component';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 

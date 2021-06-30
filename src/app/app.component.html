@@ -70,7 +70,14 @@
         </a>
 
         <div mat-subheader>Games</div>
-        <div mat-line>Coming Soon</div>
+
+        <a mat-list-item
+           routerLinkActive="active"
+           routerLink="/missing-cards"
+           [queryParams]="{id: (selectedStack$ | async)?.id}"
+        >
+          Missing Cards
+        </a>
       </mat-nav-list>
 
     </mat-sidenav>
