@@ -48,6 +48,7 @@ export class MemDeckTrainerComponent implements OnInit, OnChanges {
   disableAnimation: boolean;
 
   speech: SpeechSynthesisUtterance;
+  // to find gender of name https://api.genderize.io/?name=tessa
 
   CardDisplayDetails = CardDisplayDetails;
 
