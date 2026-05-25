@@ -5,5 +5,5 @@ import {NaturalEnum} from './enums/natural.enum';
 export interface CardDef {
   value: CardValue;
   suit: Suit;
-  naturals?: Array<NaturalEnum>;
+  naturals?: NaturalEnum[];
 }

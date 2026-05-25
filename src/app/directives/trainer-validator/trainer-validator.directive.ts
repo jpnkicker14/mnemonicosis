@@ -2,6 +2,7 @@ import {Directive} from '@angular/core';
 import {AbstractControl, FormGroup, NG_VALIDATORS, ValidationErrors} from '@angular/forms';
 
 @Directive({
+  standalone: false,
   selector: '[appTrainerValidator]',
   providers: [{
     provide: NG_VALIDATORS,

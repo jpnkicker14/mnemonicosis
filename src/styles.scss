@@ -1,0 +1,277 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Material 3 — custom dark theme
+// ─────────────────────────────────────────────────────────────────────────────
+@use '@angular/material' as mat;
+
+$app-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$violet-palette,
+    tertiary: mat.$orange-palette,
+  ),
+  typography: (
+    brand-family: '"Playfair Display", serif',
+    plain-family: '"Inter", "Roboto", sans-serif',
+  ),
+  density: (scale: 0),
+));
+
+html {
+  @include mat.all-component-themes($app-theme);
+  color-scheme: dark;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Global reset & base
+// ─────────────────────────────────────────────────────────────────────────────
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: #0d0d14;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Flex Layout Utilities — replaces @angular/flex-layout
+// ─────────────────────────────────────────────────────────────────────────────
+.fx-row { display: flex; flex-direction: row; }
+.fx-col  { display: flex; flex-direction: column; }
+
+.fx-align-center               { display: flex; justify-content: center; }
+.fx-align-center-center        { display: flex; justify-content: center;        align-items: center; }
+.fx-align-space-around         { display: flex; justify-content: space-around; }
+.fx-align-space-around-center  { display: flex; justify-content: space-around;  align-items: center; }
+.fx-align-space-between        { display: flex; justify-content: space-between; }
+.fx-align-space-between-center { display: flex; justify-content: space-between; align-items: center; }
+
+.fx-flex-95  { flex: 0 0 95%; max-width: 95%; }
+.fx-flex-66  { flex: 0 0 66.66%; }
+.fx-offset-15 { margin-left: 15%; }
+
+@media (max-width: 599px) {
+  .lt-sm-col      { flex-direction: column !important; }
+  .lt-sm-flex-100 { flex: 0 0 100% !important; max-width: 100% !important; }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Toolbar
+// ─────────────────────────────────────────────────────────────────────────────
+.mat-toolbar {
+  background: #12121e !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #e2d9ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-stack-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(226, 217, 255, 0.5);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sidenav
+// ─────────────────────────────────────────────────────────────────────────────
+mat-sidenav {
+  background: #12121e !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.sidenav-content {
+  background-color: #0d0d14;
+}
+
+.mat-mdc-nav-list {
+  padding-top: 8px !important;
+
+  // Stack selector form field
+  .mat-mdc-form-field {
+    padding: 8px 12px 4px;
+    width: 100%;
+  }
+
+  // Section headings
+  [mat-subheader] {
+    font-size: 0.68rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3) !important;
+    padding: 14px 16px 4px !important;
+  }
+
+  // Nav links
+  a[mat-list-item] {
+    border-radius: 8px !important;
+    margin: 1px 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    transition: background 0.15s, color 0.15s;
+
+    &.active {
+      background: rgba(207, 188, 255, 0.15) !important;
+      color: #cfbcff !important;
+
+      .mat-icon { color: #cfbcff !important; }
+    }
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.06) !important;
+    }
+
+    &.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page wrapper
+// ─────────────────────────────────────────────────────────────────────────────
+.mat-sidenav-content {
+  background-color: #0d0d14 !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cards (mat-card) — subtle dark surface
+// ─────────────────────────────────────────────────────────────────────────────
+mat-card.mdc-card {
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.3),
+    0 4px 16px rgba(0,0,0,0.3) !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Playing-card (flip-card) — white card on dark background
+// ─────────────────────────────────────────────────────────────────────────────
+%playing-card-base {
+  background: #fafaf9 !important;
+  border-radius: 14px !important;
+  color: #1a1a2e !important;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.35),
+    0 12px 40px rgba(0,0,0,0.45),
+    inset 0 0 0 1px rgba(0,0,0,0.07) !important;
+}
+
+app-mem-deck-trainer .card,
+app-mnemonicosis .card,
+app-accan .card,
+app-beat-clock .card {
+  @extend %playing-card-base;
+}
+
+// Face divs inside cards inherit the white card colour for text
+app-mem-deck-trainer .face,
+app-mnemonicosis .face,
+app-accan .face,
+app-beat-clock .face {
+  color: #1a1a2e;
+  background: #fafaf9;
+  border-radius: 14px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Suit colours
+// Default (white-card context): dark suits on light card background
+// ─────────────────────────────────────────────────────────────────────────────
+:root {
+  --suit-red: #c0392b;
+  --suit-black: #1a1a2e;
+}
+
+// Spread sits on a dark background — override suit colours to be readable
+app-spread {
+  --suit-red: #f47373;    // brighter red on dark
+  --suit-black: #e2e8f0;  // near-white for dark bg
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Spread grid (home page)
+// ─────────────────────────────────────────────────────────────────────────────
+app-spread {
+  display: block;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  padding: 8px 4px;
+
+  app-card-value span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.65;
+    padding: 0 3px;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Expansion panel
+// ─────────────────────────────────────────────────────────────────────────────
+mat-expansion-panel {
+  border-radius: 12px !important;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Alert (info) used in Mnemonicosis
+// ─────────────────────────────────────────────────────────────────────────────
+.alert-info {
+  color: #a5f3fc !important;
+  background-color: rgba(6, 182, 212, 0.1) !important;
+  border-color: rgba(6, 182, 212, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Beat-clock answer buttons
+// ─────────────────────────────────────────────────────────────────────────────
+.large-button {
+  width: 15%;
+  height: 60px;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FAB
+// ─────────────────────────────────────────────────────────────────────────────
+.fab-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Button toggles — hide M3 selection checkmark
+// ─────────────────────────────────────────────────────────────────────────────
+mat-button-toggle .mat-button-toggle-checkbox-wrapper { display: none !important; }
+mat-button-toggle .mat-button-toggle-button { padding-left: 0 !important; }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Scrollbars
+// ─────────────────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0d0d14; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.24); }

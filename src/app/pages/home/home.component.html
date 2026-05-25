@@ -1,10 +1,10 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
+<div class="container fx-row fx-align-center">
   <div *ngIf="(stack$ | async) as stack; else selectStack"
-       fxFlex="95%">
+       class="fx-flex-95">
     <mat-card>
       <mat-card-title>{{stack.name}}</mat-card-title>
       <mat-card-content>
-        <div class="locate" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center">
+        <div class="locate fx-row fx-align-space-around-center lt-sm-col">
           <h1 class="mat-h2">Locate: </h1>
 
           <mat-form-field appearance="fill"
@@ -41,7 +41,7 @@
         </div>
 
         <div *ngIf="positions.length > 0"
-          fxLayoutAlign="center">
+          class="fx-align-center">
           <p class="mat-title">Position<span *ngIf="positions.length > 1">s</span>: {{positions}}</p>
         </div>
 
@@ -51,7 +51,7 @@
   </div>
 
   <ng-template #selectStack>
-    <div fxLayoutAlign="center center">
+    <div class="fx-align-center-center">
       <p>Select Stack from menu.</p>
     </div>
   </ng-template>

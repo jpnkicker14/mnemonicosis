@@ -1,16 +1,18 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div *ngIf="stack$ | async as stack; else selectStack" fxFlex="95%">
+<div class="container fx-row fx-align-center">
+  <div *ngIf="stack$ | async as stack; else selectStack" class="fx-flex-95">
     <ng-container *ngIf="cardInfo$ | async as cardInfo">
       <mat-card>
-        <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
+        <mat-card-content class="fx-row fx-align-space-around-center">
           <button mat-icon-button
                   aria-label="spread"
+                  matTooltip="View spread"
                   (click)="openSpreadHandler(stack, cardInfo.card)">
             <mat-icon>more_horiz</mat-icon>
           </button>
 
           <button mat-icon-button
                   aria-label="cut off"
+                  matTooltip="Simulate a cut"
                   [matMenuTriggerFor]="cutMenu">
             <mat-icon>content_copy</mat-icon>
           </button>
@@ -27,6 +29,7 @@
 
           <button mat-icon-button
                   aria-label="psych-force"
+                  matTooltip="Psych force"
                   (click)="psychForceHandler(cardInfo.card, cutCard)">
             <mat-icon>chat</mat-icon>
           </button>
@@ -60,7 +63,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <div fxLayout="row" fxLayoutAlign="space-between">
+        <div class="fx-row fx-align-space-between">
           <p>Position: <b>{{faceDown ? cutCard?.position : cutCard?.bottomPosition}}</b></p>
           <p>Difference: <b>{{cutCardDifference}}</b></p>
         </div>
@@ -69,19 +72,17 @@
       </mat-expansion-panel>
 
 
-      <div fxLayout="row" fxLayoutAlign="center center">
+      <div class="fx-row fx-align-center-center">
         <div>
-          <div class="card-display"
-               fxLayout="row" fxLayoutAlign="space-around center">
+          <div class="card-display fx-row fx-align-space-around-center">
 
-            <div class="card"
+            <div class="card fx-col"
                  *ngIf="cardInfo?.card as card"
                  (click)="cardClicked()"
                  [@cardFlip]="state"
-                 [@.disabled]="disableAnimation"
-                 fxLayout="column">
+                 [@.disabled]="disableAnimation">
 
-              <div class="face back" fxLayout="column" fxLayoutAlign="center center">
+              <div class="face back fx-col fx-align-center-center">
                 <h1 class="mat-headline">{{cardInfo.name}} names the: </h1>
 
                 <img *ngIf="showImage; else textCard"
@@ -93,7 +94,7 @@
 
               </div>
 
-              <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+              <div class="face front fx-col fx-align-center-center">
                 <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
                 <p class="mat-headline"><span *ngIf="!faceDown">*</span>Position:
                   <b>{{faceDown ? card.position : card.bottomPosition}}</b></p>
@@ -108,7 +109,7 @@
             </div>
           </div>
 
-          <div fxLayout="row" fxLayoutAlign="center none">
+          <div class="fx-row fx-align-center">
             <mat-slide-toggle
               [(ngModel)]="showImage"
               [ngModelOptions]="{standalone: true}"
@@ -120,6 +121,7 @@
         <div class="fab-container">
           <button mat-fab color="primary"
                   aria-label="new card"
+                  matTooltip="New card"
                   (click)="newCardHandler(stack)">
             <mat-icon>add</mat-icon>
           </button>
@@ -129,7 +131,7 @@
   </div>
 
   <ng-template #selectStack>
-    <div fxLayoutAlign="center center">
+    <div class="fx-align-center-center">
       <p>Select Stack from menu.</p>
     </div>
   </ng-template>

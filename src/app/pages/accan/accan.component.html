@@ -1,18 +1,16 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
+<div class="container fx-row fx-align-center">
   <div *ngIf="(stack$ | async) as stack; else selectStack"
-       fxFlex="95%" fxLayout="column" fxLayoutAlign="space-around center">
+       class="fx-flex-95 fx-col fx-align-space-around-center">
     <h1 class="mat-headline">ACCAN</h1>
 
-    <div class="card-display"
-         fxLayout="row" fxLayoutAlign="space-around center">
+    <div class="card-display fx-row fx-align-space-around-center">
 
-      <div class="card"
+      <div class="card fx-col"
            (click)="cardClicked()"
            [@cardFlip]="state"
-           [@.disabled]="disableAnimation"
-           fxLayout="column">
+           [@.disabled]="disableAnimation">
 
-        <div class="face back" fxLayout="column" fxLayoutAlign="center center">
+        <div class="face back fx-col fx-align-center-center">
           <h1 class="mat-display-1 text-center">
             The
             <app-card-value [card]="card" [cardClass]="'mat-display-1'"></app-card-value>
@@ -21,7 +19,7 @@
 
         </div>
 
-        <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+        <div class="face front fx-col fx-align-center-center">
           <p class="mat-display-1 text-center"> The
             <app-card-value [card]="card" [cardClass]="'mat-headline'"></app-card-value>
             needs to be the {{displayNumber}} card.
@@ -44,6 +42,7 @@
     <div class="fab-container">
       <button mat-fab color="primary"
               aria-label="new card"
+              matTooltip="New scenario"
               (click)="newAcaanHandler(stack)">
         <mat-icon>add</mat-icon>
       </button>
@@ -51,7 +50,7 @@
   </div>
 
   <ng-template #selectStack>
-    <div fxLayoutAlign="center center">
+    <div class="fx-align-center-center">
       <p>Select Stack from menu.</p>
     </div>
   </ng-template>

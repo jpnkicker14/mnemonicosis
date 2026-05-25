@@ -2,6 +2,7 @@ import {Directive, Input} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors} from '@angular/forms';
 
 @Directive({
+  standalone: false,
   selector: '[appCardMaxValidator][ngModel]',
   providers: [{
     provide: NG_VALIDATORS,

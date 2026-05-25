@@ -1,27 +1,36 @@
-<div class="navbar-container" [class.example-is-mobile]="mobileQuery.matches">
+<div class="navbar-container" [class.navbar-is-mobile]="mobileQuery.matches">
 
-  <!-- Top navbar -->
-  <mat-toolbar class="navbar" color="primary">
-
-    <button mat-icon-button (click)="snav.toggle()">
+  <!-- Top toolbar -->
+  <mat-toolbar class="navbar">
+    <button mat-icon-button (click)="snav.toggle()" aria-label="Toggle menu"
+            matTooltip="Toggle menu" matTooltipPosition="right">
       <mat-icon>menu</mat-icon>
     </button>
 
-    <span>{{(selectedStack$ | async)?.name || 'Select Stack'}}</span>
+    <div class="app-brand">
+      <mat-icon class="brand-icon" style="font-size:1.3rem;height:1.3rem;width:1.3rem;">style</mat-icon>
+      Stack Trainer
+    </div>
 
     <span class="spacer"></span>
 
+    <span class="app-stack-label">{{ (selectedStack$ | async)?.name }}</span>
   </mat-toolbar>
 
   <mat-sidenav-container class="navbar-sidenav-container">
-    <!-- Side nav -->
-    <mat-sidenav #snav [opened]="!mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav"
+
+    <!-- Sidenav -->
+    <mat-sidenav #snav
+                 [opened]="!mobileQuery.matches"
+                 [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches"
+                 fixedTopGap="64"
                  (click)="mobileQuery.matches ? snav.toggle() : null">
 
       <mat-nav-list>
-        <mat-form-field appearance="fill"
-                        mat-list-item>
+
+        <!-- Stack selector -->
+        <mat-form-field appearance="fill" style="padding:12px 12px 4px;width:100%">
           <mat-label>Stack</mat-label>
           <mat-select [ngModel]="(selectedStack$ | async)?.id"
                       (ngModelChange)="stackChangeHandler($event)"
@@ -34,61 +43,55 @@
           </mat-select>
         </mat-form-field>
 
-        <a mat-list-item
-           routerLinkActive="active"
+        <a mat-list-item routerLinkActive="active"
            routerLink="/home"
-           [queryParams]="{id: (selectedStack$ | async)?.id}"
-        >
-          Home
+           [queryParams]="{id: (selectedStack$ | async)?.id}">
+          <mat-icon matListItemIcon>grid_view</mat-icon>
+          <span matListItemTitle>Spread View</span>
         </a>
 
         <div mat-subheader>Trainers</div>
-        <a mat-list-item
-           routerLinkActive="active"
+
+        <a mat-list-item routerLinkActive="active"
            routerLink="/trainer"
-           [queryParams]="{id: (selectedStack$ | async)?.id}"
-        >
-          Stack Trainer
+           [queryParams]="{id: (selectedStack$ | async)?.id}">
+          <mat-icon matListItemIcon>school</mat-icon>
+          <span matListItemTitle>Stack Trainer</span>
         </a>
 
-        <a mat-list-item
-           routerLinkActive="active"
+        <a mat-list-item routerLinkActive="active"
            routerLink="/mnemonicosis"
            [ngClass]="{'disabled': (selectedStack$ | async)?.isCyclical}"
-           [queryParams]="{id: (selectedStack$ | async)?.id}"
-        >
-          Mnemonicosis
+           [queryParams]="{id: (selectedStack$ | async)?.id}">
+          <mat-icon matListItemIcon>person_search</mat-icon>
+          <span matListItemTitle>Mnemonicosis</span>
         </a>
 
-        <a mat-list-item
-           routerLinkActive="active"
+        <a mat-list-item routerLinkActive="active"
            routerLink="/accan"
            [ngClass]="{'disabled': (selectedStack$ | async)?.isCyclical}"
-           [queryParams]="{id: (selectedStack$ | async)?.id}"
-        >
-          ACCAN
+           [queryParams]="{id: (selectedStack$ | async)?.id}">
+          <mat-icon matListItemIcon>swap_vert</mat-icon>
+          <span matListItemTitle>ACCAN</span>
         </a>
 
         <div mat-subheader>Games</div>
 
-        <a mat-list-item
-           routerLinkActive="active"
-           routerLink="/missing-cards"
-           [queryParams]="{id: (selectedStack$ | async)?.id}"
-        >
-          Missing Cards
+        <a mat-list-item routerLinkActive="active"
+           routerLink="/beat-clock"
+           [queryParams]="{id: (selectedStack$ | async)?.id}">
+          <mat-icon matListItemIcon>timer</mat-icon>
+          <span matListItemTitle>Beat the Clock</span>
         </a>
+
       </mat-nav-list>
 
     </mat-sidenav>
 
     <!-- Main content -->
     <mat-sidenav-content class="sidenav-content">
-
       <router-outlet></router-outlet>
-
     </mat-sidenav-content>
+
   </mat-sidenav-container>
-
 </div>
-

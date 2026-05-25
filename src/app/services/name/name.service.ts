@@ -8,7 +8,7 @@ import {Utils} from '../../utils/utils';
   providedIn: 'root'
 })
 export class NameService {
-  readonly spectators: Array<string> = ["Mary", "Patricia", "Jennifer", "Elizabeth", "Linda", "Barbara", "Susan",
+  readonly spectators: string[] = ["Mary", "Patricia", "Jennifer", "Elizabeth", "Linda", "Barbara", "Susan",
     "Jessica", "Margaret", "Sarah", "Karen", "Nancy", "Betty", "Lisa", "Dorothy", "Sandra", "Ashley",
     "Kimberly", "Donna", "Carol", "Michelle", "Emily", "Amanda", "Helen", "Melissa", "Deborah", "Stephanie",
     "Laura", "Rebecca", "Sharon", "Cynthia", "Kathleen", "Amy", "Shirley", "Anna", "Angela", "Ruth", "Brenda",
@@ -32,13 +32,13 @@ export class NameService {
   }
 
   getName(): Observable<string> {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set('count', '1')
       .set('with_surname', 'false')
       .set('frequency', 'all');
-    return this.http.get<Array<string>>(`https://namey.muffinlabs.com/name.json`, {params: params})
+    return this.http.get<string[]>(`https://namey.muffinlabs.com/name.json`, {params: params})
       .pipe(
-        map((names: Array<string>) => names[0]),
+        map((names: string[]) => names[0]),
         catchError((err: HttpErrorResponse) => {
           console.error(err);
           // swallow error and return random

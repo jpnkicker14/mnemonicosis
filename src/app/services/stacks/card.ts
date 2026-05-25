@@ -3,7 +3,7 @@ import {CardValue} from './enums/card-value.enum';
 import {NaturalEnum} from './enums/natural.enum';
 
 export class Card {
-  public static SUITS_LIST: Array<{ id: Suit, name: string }> =
+  public static SUITS_LIST: { id: Suit, name: string }[] =
     [
       {id: Suit.clubs, name: 'Clubs'},
       {id: Suit.hearts, name: 'Hearts'},
@@ -11,7 +11,7 @@ export class Card {
       {id: Suit.diamonds, name: 'Diamonds'},
     ];
 
-  public static VALUE_LIST: Array<{ id: CardValue, name: string }> =
+  public static VALUE_LIST: { id: CardValue, name: string }[] =
     [
       {id: CardValue.ace, name: 'Ace'},
       {id: CardValue.two, name: 'Two'},
@@ -31,10 +31,10 @@ export class Card {
   value: CardValue
   suit: Suit
   position: number;
-  naturals: Array<NaturalEnum>
+  naturals: NaturalEnum[]
   id: string;
 
-  constructor(value: CardValue, suit: Suit, position: number, naturals?: Array<NaturalEnum>) {
+  constructor(value: CardValue, suit: Suit, position: number, naturals?: NaturalEnum[]) {
     this.id = value + suit;
     this.value = value;
     this.suit = suit;

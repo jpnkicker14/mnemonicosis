@@ -8,9 +8,9 @@ export class Stack {
   id: string;
   name: string;
   group: StackGroup;
-  cards: Array<Card>;
+  cards: Card[];
 
-  static filterCards(deck: Array<Card> = [], filters: DeckFilters): Array<Card> {
+  static filterCards(deck: Card[] = [], filters: DeckFilters): Card[] {
     let boundStack = deck.slice(filters.start - 1, filters.end) ?? [];
     if(filters.valueIds.length > 0 || filters.suitIds.length > 0) {
       boundStack = boundStack.filter((card: Card) => {
@@ -27,7 +27,7 @@ export class Stack {
     return boundStack;
   }
 
-  public static shuffle(cards: Array<Card>): Array<Card> {
+  public static shuffle(cards: Card[]): Card[] {
     let currentIndex = cards.length, randomIndex;
 
     // While there remain elements to shuffle...
@@ -45,7 +45,7 @@ export class Stack {
     return cards;
   }
 
-  constructor(id: string, name: string, group: StackGroup, cards: Array<CardDef>) {
+  constructor(id: string, name: string, group: StackGroup, cards: CardDef[]) {
     this.id = id;
     this.name = name;
     this.group = group;
@@ -56,7 +56,7 @@ export class Stack {
     return this.group === StackGroup.Cyclical;
   }
 
-  get faceUpCards(): Array<Card> {
+  get faceUpCards(): Card[] {
     return [...this.cards].reverse();
   }
 }

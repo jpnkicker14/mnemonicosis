@@ -7,6 +7,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
@@ -14,8 +15,8 @@ import {Observable} from 'rxjs';
 export class AppComponent implements OnInit {
   mobileQuery: MediaQueryList;
 
-  stacks: Array<Stack>;
-  groupedStacks: Array<{ name: string, stacks: Array<Stack> }>;
+  stacks: Stack[];
+  groupedStacks: { name: string, stacks: Stack[] }[];
   selectedStack$: Observable<Stack>;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -24,8 +25,8 @@ export class AppComponent implements OnInit {
               private stacksService: StacksService) {
     this.stacks = this.stacksService.getStacks();
     this.selectedStack$ = this.stacksService.selectSelectedStack();
-    const groupedStacks: { [key: string]: Array<Stack> } = this.stacks
-      .reduce((groups: { [key: string]: Array<Stack> }, item: Stack) => {
+    const groupedStacks: Record<string, Stack[]> = this.stacks
+      .reduce((groups: Record<string, Stack[]>, item: Stack) => {
         const group = (groups[item.group] ?? []);
         group.push(item);
         groups[item.group] = group;
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit {
       .pipe(delay(200))
       .subscribe((param: Params) => {
         if(param?.id != null) {
-          this.stacksService.setSelectedStack(<Stack>this.stacksService.getStack(param.id));
+          this.stacksService.setSelectedStack((this.stacksService.getStack(param.id) as Stack));
         }
       })
   }

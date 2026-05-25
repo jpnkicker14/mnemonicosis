@@ -1,0 +1,209 @@
+.container
+  margin-top: 16px
+
+// ── Setup panel ───────────────────────────────────────────────────────────────
+.setup-panel
+  margin-top: 24px
+  padding: 24px
+  background: rgba(255, 255, 255, 0.03)
+  border: 1px solid rgba(255, 255, 255, 0.06)
+  border-radius: 14px
+
+.setup-row
+  gap: 32px
+
+.setup-group
+  display: flex
+  flex-direction: column
+  gap: 10px
+
+.setup-label
+  font-size: 0.7rem
+  font-weight: 600
+  letter-spacing: 0.1em
+  text-transform: uppercase
+  color: rgba(255, 255, 255, 0.35)
+
+.start-btn
+  height: 52px !important
+  font-size: 1.1rem !important
+  font-weight: 600 !important
+  padding: 0 40px !important
+  border-radius: 10px !important
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.empty-state
+  margin-top: 48px
+  flex-direction: column
+  gap: 8px
+  color: rgba(255, 255, 255, 0.3)
+  font-size: 0.95rem
+
+  .mat-icon
+    font-size: 2.5rem !important
+    height: 2.5rem !important
+    width: 2.5rem !important
+
+// ── Timer bar ─────────────────────────────────────────────────────────────────
+.timer-track
+  height: 5px
+  background: rgba(255, 255, 255, 0.08)
+  border-radius: 3px
+  overflow: hidden
+  margin-top: 20px
+
+.timer-fill
+  height: 100%
+  background: #a78bfa
+  border-radius: 3px
+  transition: width 0.95s linear, background 0.4s
+  &.urgent
+    background: #f87171
+
+// ── HUD ──────────────────────────────────────────────────────────────────────
+.hud
+  margin: 8px 0 20px
+
+.hud-score
+  font-size: 0.9rem
+  font-weight: 600
+  color: #86efac
+
+.hud-timer
+  font-size: 0.9rem
+  font-weight: 700
+  font-variant-numeric: tabular-nums
+  color: rgba(255, 255, 255, 0.7)
+  transition: color 0.3s
+  &.urgent
+    color: #f87171
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+.card-display
+  margin-bottom: 24px
+
+.card
+  border-radius: 14px
+  min-height: 360px
+  width: 280px
+  position: relative
+  overflow: hidden
+  transition: box-shadow 0.2s
+
+.face
+  display: flex
+  position: absolute
+  width: 100%
+  height: 100%
+  border-radius: inherit
+  padding: 20px
+  align-items: center
+  justify-content: center
+
+  > img
+    width: 100%
+    height: 100%
+    object-fit: scale-down
+    border-radius: inherit
+
+.position-number
+  font-size: 4rem
+  font-weight: 700
+  color: #1a1a2e
+
+.card-correct
+  box-shadow: 0 0 0 3px #86efac, 0 4px 24px rgba(134, 239, 172, 0.2) !important
+
+.card-wrong
+  box-shadow: 0 0 0 3px #f87171, 0 4px 24px rgba(248, 113, 113, 0.2) !important
+
+.feedback-overlay
+  position: absolute
+  inset: 0
+  border-radius: inherit
+  background: rgba(0, 0, 0, 0.6)
+  z-index: 10
+  gap: 10px
+
+.overlay-correct .feedback-icon
+  color: #86efac
+
+.overlay-wrong .feedback-icon
+  color: #f87171
+
+.feedback-icon
+  font-size: 3.5rem !important
+  height: 3.5rem !important
+  width: 3.5rem !important
+
+.missed-answer
+  font-size: 1.6rem
+  font-weight: 700
+  color: #ffffff
+  letter-spacing: 0.04em
+
+// ── Answer buttons ────────────────────────────────────────────────────────────
+.answers
+  flex-wrap: wrap
+  gap: 12px
+  margin-bottom: 16px
+
+.answer-btn
+  flex: 1 1 0
+  min-width: 80px
+  height: 56px
+  font-size: 1rem !important
+  font-weight: 600 !important
+  border-radius: 10px !important
+  transition: background 0.15s, border-color 0.15s, color 0.15s !important
+
+.answer-correct
+  background: rgba(134, 239, 172, 0.15) !important
+  border-color: #86efac !important
+  color: #86efac !important
+
+.answer-picked-wrong
+  background: rgba(248, 113, 113, 0.12) !important
+  border-color: #f87171 !important
+  color: #f87171 !important
+
+// ── End screen ───────────────────────────────────────────────────────────────
+.end-screen
+  margin-top: 56px
+  gap: 10px
+  text-align: center
+
+.end-trophy
+  font-size: 4rem !important
+  height: 4rem !important
+  width: 4rem !important
+  color: #fbbf24
+
+.end-title
+  font-family: 'Playfair Display', serif
+  font-size: 2rem
+  font-weight: 700
+  color: #e2d9ff
+  margin: 4px 0
+
+.end-score
+  font-size: 3.5rem
+  font-weight: 700
+  color: #a78bfa
+  line-height: 1.1
+
+.end-of
+  font-size: 2rem
+  color: rgba(255, 255, 255, 0.3)
+
+.end-percent
+  font-size: 1rem
+  color: rgba(255, 255, 255, 0.5)
+  margin-bottom: 12px
+
+.restart-btn
+  height: 48px !important
+  font-size: 1rem !important
+  font-weight: 600 !important
+  padding: 0 28px !important
+  border-radius: 10px !important

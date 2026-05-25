@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {tap} from 'rxjs/operators';
 
 @Component({
+  standalone: false,
   selector: 'app-accan',
   templateUrl: './accan.component.html',
   styleUrls: ['./accan.component.sass'],

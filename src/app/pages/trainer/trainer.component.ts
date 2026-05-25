@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Stack} from '../../services/stacks/stack';
 
 @Component({
+  standalone: false,
   selector: 'app-trainer',
   templateUrl: './trainer.component.html',
   styleUrls: ['./trainer.component.sass']

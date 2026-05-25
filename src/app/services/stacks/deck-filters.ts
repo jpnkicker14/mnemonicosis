@@ -11,7 +11,7 @@ export class DeckFilters {
               public display = CardDisplayEnum.card,
               public displayDetails = CardDisplayDetails.image,
               public voice = '',
-              public suitIds: Array<Suit> = [],
-              public valueIds: Array<CardValue> =  []) {
+              public suitIds: Suit[] = [],
+              public valueIds: CardValue[] =  []) {
   }
 }

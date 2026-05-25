@@ -1,0 +1,147 @@
+<div class="container fx-row fx-align-center">
+  <div *ngIf="stack; else selectStack" class="fx-flex-95">
+
+    <!-- Filters (collapsible) -->
+    <app-deck-filters-form
+      [panelOpenState]="isFiltersOpen"
+      [useButton]="true"
+      [deckFilters]="deckParams"
+      (deckFilterChanged)="onFiltersChanged(stack, $event)">
+    </app-deck-filters-form>
+
+    <!-- Pre-game setup (shown after filters are set, before game starts) -->
+    <div *ngIf="gameState === 'waiting' && filteredCards.length > 0" class="setup-panel">
+
+      <div class="setup-row fx-row fx-align-space-between-center lt-sm-col">
+        <!-- Direction -->
+        <div class="setup-group">
+          <label class="setup-label">Direction</label>
+          <mat-button-toggle-group [(ngModel)]="direction" [ngModelOptions]="{standalone: true}">
+            <mat-button-toggle value="card" matTooltip="See card, name its position">
+              <mat-icon>style</mat-icon>
+              Card → Position
+            </mat-button-toggle>
+            <mat-button-toggle value="position" matTooltip="See position, name the card">
+              <mat-icon>format_list_numbered</mat-icon>
+              Position → Card
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <!-- Time budget -->
+        <div class="setup-group">
+          <label class="setup-label">Time limit</label>
+          <mat-button-toggle-group [(ngModel)]="timeBudget" [ngModelOptions]="{standalone: true}">
+            <mat-button-toggle *ngFor="let t of timeBudgetOptions" [value]="t">
+              {{t}}s
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <div class="fx-row fx-align-center" style="margin-top: 24px;">
+        <button mat-flat-button color="primary" class="start-btn" (click)="startGame()">
+          <mat-icon>timer</mat-icon>
+          Start
+        </button>
+      </div>
+    </div>
+
+    <!-- No cards warning -->
+    <div *ngIf="gameState === 'waiting' && filteredCards.length === 0 && !isFiltersOpen"
+         class="empty-state fx-align-center-center">
+      <mat-icon>filter_list_off</mat-icon>
+      <p>No cards match the current filters.</p>
+    </div>
+
+    <!-- Playing / Feedback -->
+    <ng-container *ngIf="gameState === 'playing' || gameState === 'feedback'">
+
+      <!-- Timer bar -->
+      <div class="timer-track">
+        <div class="timer-fill"
+             [style.width.%]="timerPercent"
+             [class.urgent]="timeLeft <= 10"></div>
+      </div>
+
+      <!-- HUD -->
+      <div class="hud fx-row fx-align-space-between-center">
+        <span class="hud-score">✓ {{correctCounter}} / {{attempted}}</span>
+        <span class="hud-timer" [class.urgent]="timeLeft <= 10">{{timeLeft}}s</span>
+      </div>
+
+      <!-- Card -->
+      <div class="card-display fx-row fx-align-space-around-center">
+        <div class="card fx-col"
+             [class.card-correct]="gameState === 'feedback' && lastAnswerCorrect === true"
+             [class.card-wrong]="gameState === 'feedback' && lastAnswerCorrect === false">
+
+          <!-- Show card face (direction = card → position) -->
+          <div *ngIf="direction === 'card'; else showNumber"
+               class="face fx-align-center-center">
+            <ng-container [ngSwitch]="deckParams.displayDetails">
+              <img *ngSwitchCase="CardDisplayDetails.image" [src]="currentCard.imageUrl" />
+              <app-card-value *ngSwitchCase="CardDisplayDetails.text"
+                              [card]="currentCard"></app-card-value>
+            </ng-container>
+          </div>
+
+          <!-- Show position number (direction = position → card) -->
+          <ng-template #showNumber>
+            <div class="face fx-align-center-center">
+              <span class="position-number">{{currentCard.position}}</span>
+            </div>
+          </ng-template>
+
+          <!-- Feedback overlay -->
+          <div *ngIf="gameState === 'feedback'"
+               class="feedback-overlay fx-col fx-align-center-center"
+               [class.overlay-correct]="lastAnswerCorrect === true"
+               [class.overlay-wrong]="lastAnswerCorrect === false">
+            <mat-icon class="feedback-icon">
+              {{lastAnswerCorrect ? 'check_circle' : 'cancel'}}
+            </mat-icon>
+            <span *ngIf="!lastAnswerCorrect" class="missed-answer">
+              {{direction === 'card' ? currentCard.position : currentCard.shortHandValue + ' ' + currentCard.shortHandSuit}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answer buttons -->
+      <div class="answers fx-row fx-align-space-around-center">
+        <button *ngFor="let option of currentOptions"
+                mat-stroked-button
+                class="answer-btn"
+                [class.answer-correct]="gameState === 'feedback' && option.id === currentCard.id"
+                [class.answer-picked-wrong]="gameState === 'feedback' && pickedCard?.id === option.id && option.id !== currentCard.id"
+                [disabled]="gameState === 'feedback'"
+                (click)="answer(option)">
+          {{ direction === 'card' ? option.position : option.shortHandValue + ' ' + option.shortHandSuit }}
+        </button>
+      </div>
+
+    </ng-container>
+
+    <!-- End screen -->
+    <div *ngIf="gameState === 'ended'" class="end-screen fx-col fx-align-center-center">
+      <mat-icon class="end-trophy">emoji_events</mat-icon>
+      <h2 class="end-title">Time's up!</h2>
+      <div class="end-score">
+        {{correctCounter}}<span class="end-of"> / {{attempted}}</span>
+      </div>
+      <div class="end-percent">{{scorePercent}}% correct</div>
+      <button mat-flat-button color="primary" class="restart-btn" (click)="restart()">
+        <mat-icon>refresh</mat-icon>
+        Play Again
+      </button>
+    </div>
+
+  </div>
+
+  <ng-template #selectStack>
+    <div class="fx-align-center-center">
+      <p>Select Stack from menu.</p>
+    </div>
+  </ng-template>
+</div>

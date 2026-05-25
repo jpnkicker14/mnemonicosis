@@ -20,6 +20,7 @@ interface NewCardInfo {
 
 @UntilDestroy()
 @Component({
+  standalone: false,
   selector: 'app-mnemonicosis',
   templateUrl: './mnemonicosis.component.html',
   styleUrls: ['./mnemonicosis.component.sass'],

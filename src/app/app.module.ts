@@ -11,7 +11,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule, TitleCasePipe} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -19,7 +19,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MemDeckTrainerComponent} from './components/mem-deck-trainer/mem-deck-trainer.component';
 import {MnemonicosisComponent} from './pages/mnemonicosis/mnemonicosis.component';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {CardMinValidatorDirective} from './directives/card-min-validator/card-min-validator.directive';
@@ -33,13 +32,15 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {SpreadComponent} from './components/spread/spread.component';
 import {SpreadDialogComponent} from './components/spread-dialog/spread-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {AccanComponent} from './pages/accan/accan.component';
 import {TrainerComponent} from './pages/trainer/trainer.component';
 import {CyclicalTrainerComponent} from './components/cyclical-trainer/cyclical-trainer.component';
 import {DeckFiltersFormComponent} from './components/deck-filters-form/deck-filters-form.component';
 import {SuitsPipe} from './pipes/suits/suits.pipe';
 import { CardValuesPipe } from './pipes/card-values/card-values.pipe';
-import { MissingCardsComponent } from './pages/missing-cards/missing-cards.component';
+import { MissingCardsComponent } from './pages/games/missing-cards/missing-cards.component';
+import { BeatClockComponent } from './pages/games/beat-clock/beat-clock.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { MissingCardsComponent } from './pages/missing-cards/missing-cards.compo
     DeckFiltersFormComponent,
     SuitsPipe,
     CardValuesPipe,
-    MissingCardsComponent
+    MissingCardsComponent,
+    BeatClockComponent
   ],
     imports: [
         CommonModule,
@@ -74,8 +76,6 @@ import { MissingCardsComponent } from './pages/missing-cards/missing-cards.compo
         }),
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
-        FlexLayoutModule,
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
@@ -89,9 +89,10 @@ import { MissingCardsComponent } from './pages/missing-cards/missing-cards.compo
         MatCardModule,
         MatSlideToggleModule,
         MatDialogModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTooltipModule
     ],
-  providers: [TitleCasePipe],
+  providers: [TitleCasePipe, provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule {

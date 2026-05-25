@@ -15,6 +15,7 @@ import {DeckFilters} from '../../services/stacks/deck-filters';
 import {CardDisplayDetails} from '../../services/stacks/enums/card-display-details.enum';
 
 @Component({
+  standalone: false,
   selector: 'app-mem-deck-trainer',
   templateUrl: './mem-deck-trainer.component.html',
   styleUrls: ['./mem-deck-trainer.component.sass'],
@@ -40,7 +41,7 @@ import {CardDisplayDetails} from '../../services/stacks/enums/card-display-detai
 export class MemDeckTrainerComponent implements OnInit, OnChanges {
   @Input() stack?: Stack;
 
-  boundStack: Array<Card>;
+  boundStack: Card[];
   deckParams: DeckFilters
   focus: number;
   state: "default" | "flipped"

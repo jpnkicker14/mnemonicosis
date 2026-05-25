@@ -11,7 +11,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class StacksService {
   selectedStackSub: BehaviorSubject<Stack>;
 
-  readonly stacks: Array<Stack> = [
+  readonly stacks: Stack[] = [
     aronson,
     tamariz,
     siStebbins
@@ -21,7 +21,7 @@ export class StacksService {
     this.selectedStackSub = new BehaviorSubject<Stack>(this.stacks[0]);
   }
 
-  getStacks(): Array<Stack> {
+  getStacks(): Stack[] {
     return this.stacks;
   }
 

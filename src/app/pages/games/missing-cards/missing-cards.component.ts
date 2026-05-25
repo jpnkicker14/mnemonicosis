@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-missing-cards',
   templateUrl: './missing-cards.component.html',
   styleUrls: ['./missing-cards.component.sass']

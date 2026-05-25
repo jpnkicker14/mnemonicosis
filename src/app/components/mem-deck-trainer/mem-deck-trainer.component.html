@@ -1,26 +1,24 @@
 <div *ngIf="stack"
-     class="container"
-     fxFlex="95%">
+     class="container fx-flex-95">
     <app-deck-filters-form
       [deckFilters]="deckParams"
       (deckFilterChanged)="update(this.stack, $event)">
     </app-deck-filters-form>
 
-  <div class="card-display"
-       fxLayout="row" fxLayoutAlign="space-around center">
+  <div class="card-display fx-row fx-align-space-around-center">
     <button mat-icon-button
             aria-label="previous"
+            matTooltip="Previous card"
             (click)="leftClickHandler()">
       <mat-icon>arrow_back_ios</mat-icon>
     </button>
 
-    <div class="card"
+    <div class="card fx-col"
          (click)="cardClicked()"
          [@.disabled]="disableAnimation"
-         [@cardFlip]="state"
-         fxLayout="column">
+         [@cardFlip]="state">
 
-      <div class="face back" fxLayoutAlign="center center">
+      <div class="face back fx-align-center-center">
         <ng-container [ngSwitch]="deckParams.displayDetails">
           <img *ngSwitchCase="CardDisplayDetails.image"
                [src]="boundStack[focus].imageUrl"/>
@@ -29,7 +27,8 @@
 
           <div *ngSwitchCase="CardDisplayDetails.sound" class="sound">
             <button mat-icon-button *ngIf="state === 'default'"
-                    aria-label="Example icon-button with a heart icon"
+                    aria-label="Play sound"
+                    matTooltip="Play sound"
                     (click)="$event.stopPropagation(); playSound()">
               <mat-icon class="play-icon">volume_up</mat-icon>
             </button>
@@ -37,7 +36,7 @@
         </ng-container>
       </div>
 
-      <div class="face front" fxLayout="column" fxLayoutAlign="center center">
+      <div class="face front fx-col fx-align-center-center">
         <p class="mat-headline">Position: <b>{{boundStack[focus].position}}</b></p>
         <p *ngIf="boundStack[focus].isNatural" class="mat-title">Natural:
           <em>{{boundStack[focus].naturals.toString()}}</em>
@@ -49,6 +48,7 @@
 
     <button mat-icon-button
             aria-label="next"
+            matTooltip="Next card"
             (click)="rightClickHandler()">
       <mat-icon>arrow_forward_ios</mat-icon>
     </button>

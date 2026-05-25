@@ -7,6 +7,7 @@ import {Suit} from '../../services/stacks/enums/suit.enum';
 import {Card} from '../../services/stacks/card';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass']
@@ -15,10 +16,10 @@ export class HomeComponent implements OnInit {
   stack$: Observable<Stack>;
   valueId: string | null;
   suitId: string | null;
-  values: Array<{ id: string, name: string }>;
-  suites: Array<{ id: string, name: string }>;
-  selectedCardIds: Array<string>;
-  positions: Array<number>;
+  values: { id: string, name: string }[];
+  suites: { id: string, name: string }[];
+  selectedCardIds: string[];
+  positions: number[];
 
   constructor(private cd: ChangeDetectorRef,
               private stacksService: StacksService) {
@@ -49,12 +50,12 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  valueChangeHandler(cards: Array<Card>, valueId: string) {
+  valueChangeHandler(cards: Card[], valueId: string) {
     this.valueId = valueId;
     this.updateLocations(cards, valueId, this.suitId);
   }
 
-  suitChangeHandler(cards: Array<Card>, suitId: string) {
+  suitChangeHandler(cards: Card[], suitId: string) {
     this.suitId = suitId;
     this.updateLocations(cards, this.valueId, this.suitId);
   }
@@ -66,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.positions = [];
   }
 
-  private updateLocations(cards: Array<Card>, valueId?: string | null, suitId?: string | null): void {
+  private updateLocations(cards: Card[], valueId?: string | null, suitId?: string | null): void {
     this.selectedCardIds = [];
     this.positions = [];
     if(valueId != null || suitId != null) {
